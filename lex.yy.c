@@ -476,12 +476,14 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "timysofia-v2.l"
-#line 2 "timysofia-v2.l"
+#line 1 "lex.l"
+#line 2 "lex.l"
 #include "y.tab.h"
+#include <stdlib.h>
+#include <stdio.h>
 int var[26];
-#line 484 "lex.yy.c"
-#line 485 "lex.yy.c"
+#line 486 "lex.yy.c"
+#line 487 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -698,9 +700,9 @@ YY_DECL
 		}
 
 	{
-#line 6 "timysofia-v2.l"
+#line 8 "lex.l"
 
-#line 704 "lex.yy.c"
+#line 706 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -759,161 +761,161 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 7 "timysofia-v2.l"
-{return tNB[yytext];}
+#line 9 "lex.l"
+{yyval.nb = atoi(yytext); return tNB;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 8 "timysofia-v2.l"
+#line 10 "lex.l"
 {return tEQ;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 9 "timysofia-v2.l"
+#line 11 "lex.l"
 {return tOB;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 10 "timysofia-v2.l"
+#line 12 "lex.l"
 {return tCB;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 11 "timysofia-v2.l"
+#line 13 "lex.l"
 {return tSEM;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 12 "timysofia-v2.l"
+#line 14 "lex.l"
 {return tWHILE;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 13 "timysofia-v2.l"
+#line 15 "lex.l"
 {return tVOID;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 14 "timysofia-v2.l"
+#line 16 "lex.l"
 {return tINT;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 15 "timysofia-v2.l"
+#line 17 "lex.l"
 {return tOP;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 16 "timysofia-v2.l"
+#line 18 "lex.l"
 {return tCP;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 17 "timysofia-v2.l"
+#line 19 "lex.l"
 {return tELSE;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 18 "timysofia-v2.l"
+#line 20 "lex.l"
 {return tPLUS;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 19 "timysofia-v2.l"
+#line 21 "lex.l"
 {return tMINUS;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 20 "timysofia-v2.l"
+#line 22 "lex.l"
 {return tTIMES;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 21 "timysofia-v2.l"
+#line 23 "lex.l"
 {return tDIVIDE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 22 "timysofia-v2.l"
+#line 24 "lex.l"
 {return tMAIN;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 23 "timysofia-v2.l"
+#line 25 "lex.l"
 {return tBOOL;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 24 "timysofia-v2.l"
+#line 26 "lex.l"
 {return tCOM;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 25 "timysofia-v2.l"
+#line 27 "lex.l"
 {return tELSEIF;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 26 "timysofia-v2.l"
+#line 28 "lex.l"
 {return tIF;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 27 "timysofia-v2.l"
+#line 29 "lex.l"
 {return tEXP tNB[yytext] ;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 28 "timysofia-v2.l"
+#line 30 "lex.l"
 {return tCOMA;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 29 "timysofia-v2.l"
+#line 31 "lex.l"
 {return tPOINT;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 30 "timysofia-v2.l"
+#line 32 "lex.l"
 {return tLESS;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 31 "timysofia-v2.l"
-{return tGREATER;}
+#line 33 "lex.l"
+{return tMORE;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 32 "timysofia-v2.l"
+#line 34 "lex.l"
 {return tID[yytex];}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 33 "timysofia-v2.l"
+#line 35 "lex.l"
 { }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 34 "timysofia-v2.l"
+#line 36 "lex.l"
 { }
 	YY_BREAK
 case 29:
 /* rule 29 can match eol */
 YY_RULE_SETUP
-#line 35 "timysofia-v2.l"
+#line 37 "lex.l"
 { }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 36 "timysofia-v2.l"
+#line 38 "lex.l"
 { return " ERROR"; exit2; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 38 "timysofia-v2.l"
+#line 40 "lex.l"
 ECHO;
 	YY_BREAK
-#line 917 "lex.yy.c"
+#line 919 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1918,6 +1920,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 38 "timysofia-v2.l"
+#line 40 "lex.l"
 
 

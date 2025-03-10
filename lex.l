@@ -1,10 +1,12 @@
 %{
 #include "y.tab.h"
+#include <stdlib.h>
+#include <stdio.h>
 int var[26];
 %}
 D   [0-9]
 %%
-{D}+              {return tNB[yytext];}
+{D}+              {yylval.nb = atoi(yytext); return tNB;}
 "="               {return tEQ;}
 "{"               {return tOB;}
 "}"               {return tCB;}

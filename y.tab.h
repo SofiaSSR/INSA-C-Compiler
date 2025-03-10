@@ -76,7 +76,7 @@ extern int yydebug;
     tCOMA = 277,                   /* tCOMA  */
     tPOINT = 278,                  /* tPOINT  */
     tLESS = 279,                   /* tLESS  */
-    tGREATER = 280,                /* tGREATER  */
+    tMORE = 280,                   /* tMORE  */
     tINT = 281,                    /* tINT  */
     tID = 282                      /* tID  */
   };
@@ -109,7 +109,7 @@ extern int yydebug;
 #define tCOMA 277
 #define tPOINT 278
 #define tLESS 279
-#define tGREATER 280
+#define tMORE 280
 #define tINT 281
 #define tID 282
 
@@ -117,7 +117,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 8 "timysofia-v3.y"
+#line 8 "yacc.y"
  int nb; char var; 
 
 #line 124 "y.tab.h"

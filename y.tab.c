@@ -67,12 +67,12 @@
 
 
 /* First part of user prologue.  */
-#line 1 "timysofia-v3.y"
+#line 1 "yacc.y"
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "y.tab.h"
 int var[26];
+int yylex(void);
 void yyerror(char *s);
 
 #line 79 "y.tab.c"
@@ -141,7 +141,7 @@ extern int yydebug;
     tCOMA = 277,                   /* tCOMA  */
     tPOINT = 278,                  /* tPOINT  */
     tLESS = 279,                   /* tLESS  */
-    tGREATER = 280,                /* tGREATER  */
+    tMORE = 280,                   /* tMORE  */
     tINT = 281,                    /* tINT  */
     tID = 282                      /* tID  */
   };
@@ -174,7 +174,7 @@ extern int yydebug;
 #define tCOMA 277
 #define tPOINT 278
 #define tLESS 279
-#define tGREATER 280
+#define tMORE 280
 #define tINT 281
 #define tID 282
 
@@ -182,7 +182,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 8 "timysofia-v3.y"
+#line 8 "yacc.y"
  int nb; char var; 
 
 #line 189 "y.tab.c"
@@ -230,7 +230,7 @@ enum yysymbol_kind_t
   YYSYMBOL_tCOMA = 22,                     /* tCOMA  */
   YYSYMBOL_tPOINT = 23,                    /* tPOINT  */
   YYSYMBOL_tLESS = 24,                     /* tLESS  */
-  YYSYMBOL_tGREATER = 25,                  /* tGREATER  */
+  YYSYMBOL_tMORE = 25,                     /* tMORE  */
   YYSYMBOL_tINT = 26,                      /* tINT  */
   YYSYMBOL_tID = 27,                       /* tID  */
   YYSYMBOL_YYACCEPT = 28,                  /* $accept  */
@@ -646,7 +646,7 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "tEQ", "tOB", "tCB",
   "tSEM", "tWHILE", "tVOID", "tOP", "tCP", "tELSE", "tPLUS", "tMINUS",
   "tTIMES", "tDIVIDE", "tMAIN", "tBOOL", "tCOM", "tELSEIF", "tIF", "tEXP",
-  "tCOMA", "tPOINT", "tLESS", "tGREATER", "tINT", "tID", "$accept",
+  "tCOMA", "tPOINT", "tLESS", "tMORE", "tINT", "tID", "$accept",
   "Compiler", "Expr", "DivMul", "Terme", YY_NULLPTR
 };
 
@@ -1194,49 +1194,49 @@ yyreduce:
   switch (yyn)
     {
   case 4: /* Expr: Expr tPLUS DivMul  */
-#line 16 "timysofia-v3.y"
+#line 16 "yacc.y"
                                     { (yyval.nb) = (yyvsp[-2].nb) + (yyvsp[0].nb); }
 #line 1200 "y.tab.c"
     break;
 
   case 5: /* Expr: Expr tMINUS DivMul  */
-#line 17 "timysofia-v3.y"
+#line 17 "yacc.y"
                                  { (yyval.nb) = (yyvsp[-2].nb) - (yyvsp[0].nb); }
 #line 1206 "y.tab.c"
     break;
 
   case 6: /* Expr: DivMul  */
-#line 18 "timysofia-v3.y"
+#line 18 "yacc.y"
                              { (yyval.nb) = (yyvsp[0].nb); }
 #line 1212 "y.tab.c"
     break;
 
   case 7: /* DivMul: DivMul tTIMES Terme  */
-#line 19 "timysofia-v3.y"
+#line 19 "yacc.y"
                                       { (yyval.nb) = (yyvsp[-2].nb) * (yyvsp[0].nb); }
 #line 1218 "y.tab.c"
     break;
 
   case 8: /* DivMul: DivMul tDIVIDE Terme  */
-#line 20 "timysofia-v3.y"
+#line 20 "yacc.y"
                                            { (yyval.nb) = (yyvsp[-2].nb) / (yyvsp[0].nb); }
 #line 1224 "y.tab.c"
     break;
 
   case 9: /* DivMul: Terme  */
-#line 21 "timysofia-v3.y"
+#line 21 "yacc.y"
                             { (yyval.nb) = (yyvsp[0].nb); }
 #line 1230 "y.tab.c"
     break;
 
   case 10: /* Terme: tOP Expr tCP  */
-#line 22 "timysofia-v3.y"
+#line 22 "yacc.y"
                             { (yyval.nb) = (yyvsp[-1].nb) ;}
 #line 1236 "y.tab.c"
     break;
 
   case 11: /* Terme: tINT  */
-#line 23 "timysofia-v3.y"
+#line 23 "yacc.y"
                    { (yyval.nb) = (yyvsp[0].nb) ;}
 #line 1242 "y.tab.c"
     break;
@@ -1435,7 +1435,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 24 "timysofia-v3.y"
+#line 24 "yacc.y"
 
 void yyerror(char *s) { fprintf(stderr, "%s\n", s); }
 
