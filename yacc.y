@@ -1,12 +1,12 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
-#include "y.tab.h"
 int var[26];
+int yylex(void);
 void yyerror(char *s);
 %}
 %union { int nb; char var; }
-%token  tEQ tOB tCB tSEM tWHILE tVOID tOP tCP tELSE tPLUS tMINUS tTIMES tDIVIDE tMAIN tBOOL tCOM tELSEIF tIF tEXP tCOMA tPOINT tLESS tGREATER
+%token  tEQ tOB tCB tSEM tWHILE tVOID tOP tCP tELSE tPLUS tMINUS tTIMES tDIVIDE tMAIN tBOOL tCOM tELSEIF tIF tEXP tCOMA tPOINT tLESS tMORE
 %token <nb> tINT
 %token <var> tID
 %type <nb> Expr DivMul Terme
