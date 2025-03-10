@@ -1,11 +1,8 @@
 %{
-#include <stdlib.h>
-#include <stdio.h>
 #include "y.tab.h"
 int var[26];
-void yyerror(char *s);
 %}
-%D   [0-9]
+D   [0-9]
 %%
 {D}+              {return tNB[yytext];}
 "="               {return tEQ;}
@@ -27,11 +24,11 @@ bool              {return tBOOL;}
 "=="              {return tCOM;}
 "else if"         {return tELSEIF;}
 if                {return tIF;}
-{D}+[eE]{D}+      {return tEXP tNB[yytex];}
+{D}+[eE]{D}+      {return tEXP tNB[yytext] ;}
 ","               {return tCOMA;}
 "."               {return tPOINT;}
 "<"               {return tLESS;}
-">"               {return tGREATER;}
+">"               {return tMORE;}
 [a-z]+            {return tID[yytex];}
 " "               { }
 \t                { }
@@ -39,8 +36,3 @@ if                {return tIF;}
 .                 { return " ERROR"; exit2; }
 
 %%
-
-void main(void) {
-        yyparse();
-        return 0;
-}

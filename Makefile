@@ -1,4 +1,4 @@
-LEX_SRC=timysofia-v1.l
+LEX_SRC=timysofia-v2.l
 YACC_SRC=timysofia-v3.y
 CC=gcc
 
