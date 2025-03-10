@@ -1,0 +1,39 @@
+%option noyywrap
+D   [0-9]
+%%
+{D}+              printf(" tNB[%s]", yytext);
+"="               printf(" tEQ");
+"{"               printf(" tOB");
+"}"               printf(" tCB");
+";"               printf(" tSEM");
+while             printf(" tWHILE");
+void              printf(" tVOID");
+int               printf(" tINT");
+"("               printf(" tOP");
+")"               printf(" tCP");
+else              printf(" tELSE");
+"+"               printf(" tPLUS");
+"-"		  printf(" tMINUS");
+"*"		  printf(" tTIMES");
+"/"   	          printf(" tDIVIDE");
+main              printf(" tMAIN");
+bool              printf(" tBOOL");
+"=="		  printf(" tCOM");
+"<"		  printf(" tLESS");
+">"		  printf(" tGREATER");
+"else if"	  printf(" tELSEIF");
+if                printf(" tIF");
+","  		  printf(" tCOMA");
+"."		  printf(" tPOINT");
+[a-z]+            printf(" tID[%s]", yytext);
+" "               { }
+\t                { }
+\n                { }
+.               { printf(" ERROR\n"); exit(2); }
+
+%%
+
+void main(void) {
+	yylex();
+
+}
