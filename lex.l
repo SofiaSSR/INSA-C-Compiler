@@ -6,7 +6,7 @@ int var[26];
 %}
 D   [0-9]
 %%
-{D}+              {yylval.nb = atoi(yytext); return tNB;}
+{D}+              {yylval.nb = atoi(yytext);  return tNB;}
 "="               {return tEQ;}
 "{"               {return tOB;}
 "}"               {return tCB;}
@@ -38,3 +38,7 @@ if                {return tIF;}
 .                 { return " ERROR"; exit2; }
 
 %%
+
+int yywrap() {
+    return 1;
+}
