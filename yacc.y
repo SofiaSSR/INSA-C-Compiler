@@ -27,12 +27,12 @@ struct synb st[MAX_VAR];
 %%
 Compiler :    Expr Compiler  { $$ = $1; }
             | Expr { $$ = $1; } ;
-Expr :		  Expr tPLUS DivMul     { $$ = temp_var_assign($1 + $3); }
-            | Expr tMINUS DivMul  { $$ = temp_var_assign($1 - $3); }
+Expr :		  Expr tPLUS DivMul     {temp_var_assign($1 + $3); }
+            | Expr tMINUS DivMul  {temp_var_assign($1 - $3); }
             | DivMul     { $$ = $1; };
 
-DivMul :      DivMul tTIMES Terme   { $$ = temp_var_assign($1 * $3); }
-            | DivMul tDIVIDE Terme { $$ = temp_var_assign($1 / $3); }
+DivMul :      DivMul tTIMES Terme   {temp_var_assign($1 * $3); }
+            | DivMul tDIVIDE Terme {temp_var_assign($1 / $3); }
             | Terme                { $$ = $1; } ;
 
 
