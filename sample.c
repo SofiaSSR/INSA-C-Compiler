@@ -1,5 +1,4 @@
-a + b
-
+1+1
 // void int main() {
 // 	 int abc, ggg, hhhh == 123, 123, 234;
 // 	 int a = 6+6+7+2*45/5;
