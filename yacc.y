@@ -1,6 +1,7 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define MAX_VAR 128 
 
@@ -10,21 +11,20 @@ void yyerror(char *s);
 int last_st_index = 0;
 
 struct synb {
-char id[32];
-int adress; 
-int init;
-}
+    char id[32];
+    int adress; 
+    int init;
+};
 
 struct synb st[MAX_VAR];
 
 %}
-%union { int nb; char var; int temp_val ;}
+%union { int nb; char var; int temp_val; }
 %token  tEQ tOB tCB tSEM tWHILE tVOID tOP tCP tELSE tPLUS tMINUS tTIMES tDIVIDE tMAIN tBOOL tCOM tELSEIF tIF tEXP tCOMA tPOINT tLESS tMORE tINT
 %token <var> tID
 %token <nb> tNB
 %type <nb> Expr DivMul Terme 
 %start Compiler
-
 
 %%
 Compiler :    Expr Compiler  { $1; }
@@ -32,13 +32,13 @@ Compiler :    Expr Compiler  { $1; }
 
 Expr :		  Expr tPLUS DivMul {
                 __asm__(
-                    ADD $1 , $1 , $3
+                    "ADD $1, $1, $3"
                 );
                 free_last_temp();
                 $$ = $1; }
             | Expr tMINUS DivMul  {
                 __asm__(
-                    SOU $1 , $1 , $3
+                    "SUB $1, $1, $3"
                 );
                 free_last_temp();
                 $$ = $1; }
@@ -46,29 +46,38 @@ Expr :		  Expr tPLUS DivMul {
 
 DivMul :      DivMul tTIMES Terme   {
                 __asm__(
-                    MUL $1 , $1 , $3
+                    "MUL $1, $1, $3"
                 );
                 free_last_temp();
                 $$ = $1; }
             | DivMul tDIVIDE Terme {
                 __asm__(
-                    DIV $1 , $1 , $3
+                    "DIV $1, $1, $3"
                 );
                 free_last_temp();
                 $$ = $1;  }
-            | Terme { $$ = $1; } ;
-
+            | Terme { $$ = $1; };
 
 Terme:        tOP  Expr tCP { $$ = $2; }
-            | tNB           { $$ = temp_var_assign($1);}
+            | tNB           { $$ = temp_var_assign($1); }
             | tID           { $$ = var_lookup($1); };
 
+Asg:          tINT tID tEQ Terme tSEM   { 
+                __asm__(
+                    "COP var_lookup($2), $2, $4"
+                );
+                var_insert($2, $4);
+                free_last_temp(); }
+            | tINT tID tEQ Expr tSEM   { var_insert($2, $4); 
+            free_last_temp();}
+            | tID tEQ Expr tSEM   { 
+                __asm__(
+                    "COP var_lookup($1), $1, $3"
+                );
+                var_assign($1, $3);
+                free_last_temp(); };
 
-Asg:          tINT tID tEQ tNB tSEM   { var_insert($2, $4); }
-            | tINT tID tEQ Expr tSEM   { var_insert($2, $4); }
-            | tID tEQ Expr tSEM         { var_assign($1, $3); };
-
-Bool:         tID tCOM tID { var_lookup($1) == var_lookup($3); }
+/* Bool:         tID tCOM tID { var_lookup($1) == var_lookup($3); }
             | tNB tCOM tNB { $1 == $3; }
             | tNB tCOM tID { $1 == var_lookup($3); }
             | tID tLESS tID { var_lookup($1) < var_lookup($3); }
@@ -83,7 +92,7 @@ Bool:         tID tCOM tID { var_lookup($1) == var_lookup($3); }
             | tID tMORE tEQ tID { var_lookup($1) >= var_lookup($4);} 
             | tNB tMORE tEQ tNB { $1 >= $4; }
             | tNB tMORE tEQ tID { $1 >= var_lookup($4); } ;
-            | tBOOL tCOM tBOOL { $1 == $3; }
+            | tBOOL tCOM tBOOL { $1 == $3; } */
 /*
 
 Alg:         Alg Asg {$1 $2; }
@@ -95,9 +104,10 @@ ElseIf:        tELSE tIF tOP Bool tCP tOB Alg tCB {$3; }
 If:           tIF tOP Bool tCP tOB Alg tCB tSEM {$6; }
             | If Else {}
             | If ElseIf { } ; */
+
 %%
 
-void free_last_temp(){
+void free_last_temp(void){
     st[last_st_index].init = 0;
     last_st_index = last_st_index - 1;
 }
@@ -117,10 +127,7 @@ int var_lookup(char *id) {
 
 
 void var_insert(char *id, int value) {
-    //char adress = new adress
-    __asm__(
-        AFC adress value;
-    )
+    int adress = last_st_index;  // New address for the variable.
     for (int i = 0; i < MAX_VAR; i++) {
         if (st[i].init == 0) {  
             strcpy(st[i].id, id);
@@ -129,7 +136,7 @@ void var_insert(char *id, int value) {
             return;
         }
     }
-    last_st_index = last_st_index +1 ;
+    last_st_index = last_st_index + 1 ;
     printf("Error: Symbol table is full\n");
     exit(1);
 }
@@ -150,14 +157,14 @@ void var_assign(char *id, int adress) {
 int temp_var_assign(int adress) {
     for (int i = 0; i < MAX_VAR; i++) {
         if (st[i].init == 0) {  
-            strcpy(st[i].id, id);
+            strcpy(st[i].id, "temp_var");
             st[i].adress = adress;
             st[i].init = 1;
-            return;
+            return adress;
         }
     }
-    last_st_index = last_st_index +1 ;
-    printf("Error: Temp Variable '%s' not found\n", id);
+    last_st_index = last_st_index + 1 ;
+    printf("Error: Temp Variable not found\n");
     exit(1);   
 }
 
@@ -166,4 +173,3 @@ int main(void) {
   yyparse();
   return 0;
 }
-

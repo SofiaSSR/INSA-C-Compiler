@@ -35,7 +35,7 @@ if                {return tIF;}
 " "               { }
 \t                { }
 \n                { }
-.                 { return " ERROR"; exit2; }
+.                 { return " ERROR"; exit; }
 
 %%
 

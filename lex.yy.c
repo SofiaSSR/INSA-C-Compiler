@@ -762,7 +762,7 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 9 "lex.l"
-{yyval.nb = atoi(yytext); return tNB;}
+{yylval.nb = atoi(yytext);  return tNB;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
@@ -908,7 +908,7 @@ YY_RULE_SETUP
 case 30:
 YY_RULE_SETUP
 #line 38 "lex.l"
-{ return " ERROR"; exit2; }
+{ return " ERROR"; exit; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
@@ -1923,3 +1923,6 @@ void yyfree (void * ptr )
 #line 40 "lex.l"
 
 
+int yywrap() {
+    return 1;
+}

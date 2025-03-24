@@ -71,11 +71,25 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-int var[26];
+#include <string.h>
+
+#define MAX_VAR 128 
+
+char var[26];
 int yylex(void);
 void yyerror(char *s);
+int last_st_index = 0;
 
-#line 79 "y.tab.c"
+struct synb {
+    char id[32];
+    int adress; 
+    int init;
+};
+
+struct synb st[MAX_VAR];
+
+
+#line 93 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -143,7 +157,8 @@ extern int yydebug;
     tLESS = 279,                   /* tLESS  */
     tMORE = 280,                   /* tMORE  */
     tINT = 281,                    /* tINT  */
-    tID = 282                      /* tID  */
+    tID = 282,                     /* tID  */
+    tNB = 283                      /* tNB  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -177,15 +192,16 @@ extern int yydebug;
 #define tMORE 280
 #define tINT 281
 #define tID 282
+#define tNB 283
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 8 "yacc.y"
- int nb; char var; 
+#line 22 "yacc.y"
+ int nb; char var; int temp_val; 
 
-#line 189 "y.tab.c"
+#line 205 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -233,11 +249,12 @@ enum yysymbol_kind_t
   YYSYMBOL_tMORE = 25,                     /* tMORE  */
   YYSYMBOL_tINT = 26,                      /* tINT  */
   YYSYMBOL_tID = 27,                       /* tID  */
-  YYSYMBOL_YYACCEPT = 28,                  /* $accept  */
-  YYSYMBOL_Compiler = 29,                  /* Compiler  */
-  YYSYMBOL_Expr = 30,                      /* Expr  */
-  YYSYMBOL_DivMul = 31,                    /* DivMul  */
-  YYSYMBOL_Terme = 32                      /* Terme  */
+  YYSYMBOL_tNB = 28,                       /* tNB  */
+  YYSYMBOL_YYACCEPT = 29,                  /* $accept  */
+  YYSYMBOL_Compiler = 30,                  /* Compiler  */
+  YYSYMBOL_Expr = 31,                      /* Expr  */
+  YYSYMBOL_DivMul = 32,                    /* DivMul  */
+  YYSYMBOL_Terme = 33                      /* Terme  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -563,21 +580,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  8
+#define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   18
+#define YYLAST   21
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  28
+#define YYNTOKENS  29
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  11
+#define YYNRULES  12
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  19
+#define YYNSTATES  20
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   282
+#define YYMAXUTOK   283
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -619,15 +636,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27
+      25,    26,    27,    28
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    15,    15,    15,    16,    17,    18,    19,    20,    21,
-      22,    23
+       0,    30,    30,    31,    33,    39,    45,    47,    53,    59,
+      61,    62,    63
 };
 #endif
 
@@ -646,7 +663,7 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "tEQ", "tOB", "tCB",
   "tSEM", "tWHILE", "tVOID", "tOP", "tCP", "tELSE", "tPLUS", "tMINUS",
   "tTIMES", "tDIVIDE", "tMAIN", "tBOOL", "tCOM", "tELSEIF", "tIF", "tEXP",
-  "tCOMA", "tPOINT", "tLESS", "tMORE", "tINT", "tID", "$accept",
+  "tCOMA", "tPOINT", "tLESS", "tMORE", "tINT", "tID", "tNB", "$accept",
   "Compiler", "Expr", "DivMul", "Terme", YY_NULLPTR
 };
 
@@ -671,8 +688,8 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -8,    -8,   -10,     6,    -9,    -4,   -10,    -5,   -10,    -8,
-      -8,   -10,    -8,    -8,   -10,    -4,    -4,   -10,   -10
+      -7,    -7,   -10,   -10,     6,    -9,    -4,   -10,    -5,   -10,
+      -7,    -7,   -10,    -7,    -7,   -10,    -4,    -4,   -10,   -10
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -680,20 +697,20 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,    11,     0,     3,     6,     9,     0,     1,     0,
-       0,     2,     0,     0,    10,     4,     5,     7,     8
+       0,     0,    12,    11,     0,     3,     6,     9,     0,     1,
+       0,     0,     2,     0,     0,    10,     4,     5,     7,     8
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -10,    -2,     8,     3,     2
+     -10,     4,     0,     2,     1
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     3,     4,     5,     6
+       0,     4,     5,     6,     7
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -701,36 +718,38 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       1,     1,    11,     9,    10,    14,     8,     9,    10,     7,
-      12,    13,    15,    16,    17,    18,     0,     2,     2
+       1,     8,     1,    10,    11,    15,     9,    10,    11,    12,
+      13,    14,    16,    17,    18,    19,     0,     0,     2,     3,
+       2,     3
 };
 
 static const yytype_int8 yycheck[] =
 {
-       9,     9,     4,    12,    13,    10,     0,    12,    13,     1,
-      14,    15,     9,    10,    12,    13,    -1,    26,    26
+       9,     1,     9,    12,    13,    10,     0,    12,    13,     5,
+      14,    15,    10,    11,    13,    14,    -1,    -1,    27,    28,
+      27,    28
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     9,    26,    29,    30,    31,    32,    30,     0,    12,
-      13,    29,    14,    15,    10,    31,    31,    32,    32
+       0,     9,    27,    28,    30,    31,    32,    33,    31,     0,
+      12,    13,    30,    14,    15,    10,    32,    32,    33,    33
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    28,    29,    29,    30,    30,    30,    31,    31,    31,
-      32,    32
+       0,    29,    30,    30,    31,    31,    31,    32,    32,    32,
+      33,    33,    33
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     2,     1,     3,     3,     1,     3,     3,     1,
-       3,     1
+       3,     1,     1
 };
 
 
@@ -1193,56 +1212,94 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 2: /* Compiler: Expr Compiler  */
+#line 30 "yacc.y"
+                             { (yyvsp[-1].nb); }
+#line 1219 "y.tab.c"
+    break;
+
+  case 3: /* Compiler: Expr  */
+#line 31 "yacc.y"
+                   { (yyvsp[0].nb); }
+#line 1225 "y.tab.c"
+    break;
+
   case 4: /* Expr: Expr tPLUS DivMul  */
-#line 16 "yacc.y"
-                                    { (yyval.nb) = (yyvsp[-2].nb) + (yyvsp[0].nb); }
-#line 1200 "y.tab.c"
-    break;
-
-  case 5: /* Expr: Expr tMINUS DivMul  */
-#line 17 "yacc.y"
-                                 { (yyval.nb) = (yyvsp[-2].nb) - (yyvsp[0].nb); }
-#line 1206 "y.tab.c"
-    break;
-
-  case 6: /* Expr: DivMul  */
-#line 18 "yacc.y"
-                             { (yyval.nb) = (yyvsp[0].nb); }
-#line 1212 "y.tab.c"
-    break;
-
-  case 7: /* DivMul: DivMul tTIMES Terme  */
-#line 19 "yacc.y"
-                                      { (yyval.nb) = (yyvsp[-2].nb) * (yyvsp[0].nb); }
-#line 1218 "y.tab.c"
-    break;
-
-  case 8: /* DivMul: DivMul tDIVIDE Terme  */
-#line 20 "yacc.y"
-                                           { (yyval.nb) = (yyvsp[-2].nb) / (yyvsp[0].nb); }
-#line 1224 "y.tab.c"
-    break;
-
-  case 9: /* DivMul: Terme  */
-#line 21 "yacc.y"
-                            { (yyval.nb) = (yyvsp[0].nb); }
-#line 1230 "y.tab.c"
-    break;
-
-  case 10: /* Terme: tOP Expr tCP  */
-#line 22 "yacc.y"
-                            { (yyval.nb) = (yyvsp[-1].nb) ;}
+#line 33 "yacc.y"
+                                    {
+                __asm__(
+                    "ADD $1, $1, $3"
+                );
+                free_last_temp();
+                (yyval.nb) = (yyvsp[-2].nb); }
 #line 1236 "y.tab.c"
     break;
 
-  case 11: /* Terme: tINT  */
-#line 23 "yacc.y"
-                   { (yyval.nb) = (yyvsp[0].nb) ;}
-#line 1242 "y.tab.c"
+  case 5: /* Expr: Expr tMINUS DivMul  */
+#line 39 "yacc.y"
+                                  {
+                __asm__(
+                    "SUB $1, $1, $3"
+                );
+                free_last_temp();
+                (yyval.nb) = (yyvsp[-2].nb); }
+#line 1247 "y.tab.c"
+    break;
+
+  case 6: /* Expr: DivMul  */
+#line 45 "yacc.y"
+                         { (yyval.nb) = (yyvsp[0].nb); }
+#line 1253 "y.tab.c"
+    break;
+
+  case 7: /* DivMul: DivMul tTIMES Terme  */
+#line 47 "yacc.y"
+                                    {
+                __asm__(
+                    "MUL $1, $1, $3"
+                );
+                free_last_temp();
+                (yyval.nb) = (yyvsp[-2].nb); }
+#line 1264 "y.tab.c"
+    break;
+
+  case 8: /* DivMul: DivMul tDIVIDE Terme  */
+#line 53 "yacc.y"
+                                   {
+                __asm__(
+                    "DIV $1, $1, $3"
+                );
+                free_last_temp();
+                (yyval.nb) = (yyvsp[-2].nb);  }
+#line 1275 "y.tab.c"
+    break;
+
+  case 9: /* DivMul: Terme  */
+#line 59 "yacc.y"
+                    { (yyval.nb) = (yyvsp[0].nb); }
+#line 1281 "y.tab.c"
+    break;
+
+  case 10: /* Terme: tOP Expr tCP  */
+#line 61 "yacc.y"
+                            { (yyval.nb) = (yyvsp[-1].nb); }
+#line 1287 "y.tab.c"
+    break;
+
+  case 11: /* Terme: tNB  */
+#line 62 "yacc.y"
+                            { (yyval.nb) = temp_var_assign((yyvsp[0].nb)); }
+#line 1293 "y.tab.c"
+    break;
+
+  case 12: /* Terme: tID  */
+#line 63 "yacc.y"
+                            { (yyval.nb) = var_lookup((yyvsp[0].var)); }
+#line 1299 "y.tab.c"
     break;
 
 
-#line 1246 "y.tab.c"
+#line 1303 "y.tab.c"
 
       default: break;
     }
@@ -1435,13 +1492,72 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 24 "yacc.y"
+#line 108 "yacc.y"
+
+
+void free_last_temp(void){
+    st[last_st_index].init = 0;
+    last_st_index = last_st_index - 1;
+}
 
 void yyerror(char *s) { fprintf(stderr, "%s\n", s); }
 
+
+int var_lookup(char *id) {
+    for (int i = 0; i < MAX_VAR; i++) {
+        if (st[i].init && strcmp(st[i].id, id) == 0) {
+            return st[i].adress;
+        }
+    }
+    printf("Error: Variable '%s' not found or not initialized\n", id);
+    exit(1);  
+}
+
+
+void var_insert(char *id, int value) {
+    int adress = last_st_index;  // New address for the variable.
+    for (int i = 0; i < MAX_VAR; i++) {
+        if (st[i].init == 0) {  
+            strcpy(st[i].id, id);
+            st[i].adress = adress;
+            st[i].init = 1;
+            return;
+        }
+    }
+    last_st_index = last_st_index + 1 ;
+    printf("Error: Symbol table is full\n");
+    exit(1);
+}
+
+
+void var_assign(char *id, int adress) {
+    for (int i = 0; i < MAX_VAR; i++) {
+        if (st[i].init && strcmp(st[i].id, id) == 0) {
+            st[i].adress = adress;
+            return;
+        }
+    }
+    printf("Error: Variable '%s' not found\n", id);
+    exit(1);  
+}
+
+
+int temp_var_assign(int adress) {
+    for (int i = 0; i < MAX_VAR; i++) {
+        if (st[i].init == 0) {  
+            strcpy(st[i].id, "temp_var");
+            st[i].adress = adress;
+            st[i].init = 1;
+            return adress;
+        }
+    }
+    last_st_index = last_st_index + 1 ;
+    printf("Error: Temp Variable not found\n");
+    exit(1);   
+}
+
 int main(void) {
-  printf("Yacc\n"); // yydebug=1;
+  printf("Yacc\n"); 
   yyparse();
   return 0;
 }
-

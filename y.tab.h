@@ -78,7 +78,8 @@ extern int yydebug;
     tLESS = 279,                   /* tLESS  */
     tMORE = 280,                   /* tMORE  */
     tINT = 281,                    /* tINT  */
-    tID = 282                      /* tID  */
+    tID = 282,                     /* tID  */
+    tNB = 283                      /* tNB  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -112,15 +113,16 @@ extern int yydebug;
 #define tMORE 280
 #define tINT 281
 #define tID 282
+#define tNB 283
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 8 "yacc.y"
- int nb; char var; 
+#line 22 "yacc.y"
+ int nb; char var; int temp_val; 
 
-#line 124 "y.tab.h"
+#line 126 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
