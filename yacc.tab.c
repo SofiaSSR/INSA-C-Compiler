@@ -143,7 +143,7 @@ void var_insert(char *id, int value) {
 void var_assign(char *id, int src) {
     for (int i = 0; i < MAX_VAR; i++) {
         if (st[i].init && strcmp(st[i].id, id) == 0) {
-            emit("COP", st[i].adress, src, 0);
+            emit("COP", styyparse[i].adress, src, 0);
             return;
         }
     }
@@ -160,7 +160,7 @@ int temp_var_assign(int value) {
     return addr;
 }
 
-#line 164 "y.tab.c"
+#line 164 "yacc.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -183,111 +183,7 @@ int temp_var_assign(int value) {
 #  endif
 # endif
 
-/* Use api.header.include to #include this header
-   instead of duplicating it here.  */
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    tEQ = 258,                     /* tEQ  */
-    tOB = 259,                     /* tOB  */
-    tCB = 260,                     /* tCB  */
-    tSEM = 261,                    /* tSEM  */
-    tWHILE = 262,                  /* tWHILE  */
-    tVOID = 263,                   /* tVOID  */
-    tOP = 264,                     /* tOP  */
-    tCP = 265,                     /* tCP  */
-    tELSE = 266,                   /* tELSE  */
-    tPLUS = 267,                   /* tPLUS  */
-    tMINUS = 268,                  /* tMINUS  */
-    tTIMES = 269,                  /* tTIMES  */
-    tDIVIDE = 270,                 /* tDIVIDE  */
-    tMAIN = 271,                   /* tMAIN  */
-    tBOOL = 272,                   /* tBOOL  */
-    tCOM = 273,                    /* tCOM  */
-    tELSEIF = 274,                 /* tELSEIF  */
-    tIF = 275,                     /* tIF  */
-    tEXP = 276,                    /* tEXP  */
-    tCOMA = 277,                   /* tCOMA  */
-    tPOINT = 278,                  /* tPOINT  */
-    tLESS = 279,                   /* tLESS  */
-    tMORE = 280,                   /* tMORE  */
-    tINT = 281,                    /* tINT  */
-    tID = 282,                     /* tID  */
-    tNB = 283                      /* tNB  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-/* Token kinds.  */
-#define YYEMPTY -2
-#define YYEOF 0
-#define YYerror 256
-#define YYUNDEF 257
-#define tEQ 258
-#define tOB 259
-#define tCB 260
-#define tSEM 261
-#define tWHILE 262
-#define tVOID 263
-#define tOP 264
-#define tCP 265
-#define tELSE 266
-#define tPLUS 267
-#define tMINUS 268
-#define tTIMES 269
-#define tDIVIDE 270
-#define tMAIN 271
-#define tBOOL 272
-#define tCOM 273
-#define tELSEIF 274
-#define tIF 275
-#define tEXP 276
-#define tCOMA 277
-#define tPOINT 278
-#define tLESS 279
-#define tMORE 280
-#define tINT 281
-#define tID 282
-#define tNB 283
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-union YYSTYPE
-{
-#line 94 "yacc.y"
- int nb; char var; int temp_val; 
-
-#line 276 "y.tab.c"
-
-};
-typedef union YYSTYPE YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-extern YYSTYPE yylval;
-
-
-int yyparse (void);
-
-
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+#include "yacc.tab.h"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -1299,7 +1195,7 @@ yyreduce:
             emit("ADD", res, (yyvsp[-2].nb), (yyvsp[0].nb));
             (yyval.nb) = res;
         }
-#line 1303 "y.tab.c"
+#line 1199 "yacc.tab.c"
     break;
 
   case 7: /* Expr: Expr tMINUS DivMul  */
@@ -1309,13 +1205,13 @@ yyreduce:
             emit("SOU", res, (yyvsp[-2].nb), (yyvsp[0].nb));
             (yyval.nb) = res;
         }
-#line 1313 "y.tab.c"
+#line 1209 "yacc.tab.c"
     break;
 
   case 8: /* Expr: DivMul  */
 #line 117 "yacc.y"
              { (yyval.nb) = (yyvsp[0].nb); }
-#line 1319 "y.tab.c"
+#line 1215 "yacc.tab.c"
     break;
 
   case 9: /* DivMul: DivMul tTIMES Terme  */
@@ -1325,7 +1221,7 @@ yyreduce:
             emit("MUL", res, (yyvsp[-2].nb), (yyvsp[0].nb));
             (yyval.nb) = res;
         }
-#line 1329 "y.tab.c"
+#line 1225 "yacc.tab.c"
     break;
 
   case 10: /* DivMul: DivMul tDIVIDE Terme  */
@@ -1335,31 +1231,31 @@ yyreduce:
             emit("DIV", res, (yyvsp[-2].nb), (yyvsp[0].nb));
             (yyval.nb) = res;
         }
-#line 1339 "y.tab.c"
+#line 1235 "yacc.tab.c"
     break;
 
   case 11: /* DivMul: Terme  */
 #line 129 "yacc.y"
               { (yyval.nb) = (yyvsp[0].nb); }
-#line 1345 "y.tab.c"
+#line 1241 "yacc.tab.c"
     break;
 
   case 12: /* Terme: tOP Expr tCP  */
 #line 131 "yacc.y"
                      { (yyval.nb) = (yyvsp[-1].nb); }
-#line 1351 "y.tab.c"
+#line 1247 "yacc.tab.c"
     break;
 
   case 13: /* Terme: tNB  */
 #line 132 "yacc.y"
             { (yyval.nb) = temp_var_assign((yyvsp[0].nb)); }
-#line 1357 "y.tab.c"
+#line 1253 "yacc.tab.c"
     break;
 
   case 14: /* Terme: tID  */
 #line 133 "yacc.y"
             { (yyval.nb) = var_lookup((yyvsp[0].var)); }
-#line 1363 "y.tab.c"
+#line 1259 "yacc.tab.c"
     break;
 
   case 15: /* Asg: tINT tID tEQ Terme tSEM  */
@@ -1367,7 +1263,7 @@ yyreduce:
                               {
             var_insert((yyvsp[-3].var), (yyvsp[-1].nb));
         }
-#line 1371 "y.tab.c"
+#line 1267 "yacc.tab.c"
     break;
 
   case 16: /* Asg: tINT tID tEQ Expr tSEM  */
@@ -1375,7 +1271,7 @@ yyreduce:
                              {
             var_insert((yyvsp[-3].var), (yyvsp[-1].nb));
         }
-#line 1379 "y.tab.c"
+#line 1275 "yacc.tab.c"
     break;
 
   case 17: /* Asg: tID tEQ Expr tSEM  */
@@ -1383,11 +1279,11 @@ yyreduce:
                         {
             var_assign((yyvsp[-3].var), (yyvsp[-1].nb));
         }
-#line 1387 "y.tab.c"
+#line 1283 "yacc.tab.c"
     break;
 
 
-#line 1391 "y.tab.c"
+#line 1287 "yacc.tab.c"
 
       default: break;
     }

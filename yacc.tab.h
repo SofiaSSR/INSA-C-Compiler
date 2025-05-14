@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+#ifndef YY_YY_YACC_TAB_H_INCLUDED
+# define YY_YY_YACC_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -83,37 +83,6 @@ extern int yydebug;
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
-/* Token kinds.  */
-#define YYEMPTY -2
-#define YYEOF 0
-#define YYerror 256
-#define YYUNDEF 257
-#define tEQ 258
-#define tOB 259
-#define tCB 260
-#define tSEM 261
-#define tWHILE 262
-#define tVOID 263
-#define tOP 264
-#define tCP 265
-#define tELSE 266
-#define tPLUS 267
-#define tMINUS 268
-#define tTIMES 269
-#define tDIVIDE 270
-#define tMAIN 271
-#define tBOOL 272
-#define tCOM 273
-#define tELSEIF 274
-#define tIF 275
-#define tEXP 276
-#define tCOMA 277
-#define tPOINT 278
-#define tLESS 279
-#define tMORE 280
-#define tINT 281
-#define tID 282
-#define tNB 283
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -122,7 +91,7 @@ union YYSTYPE
 #line 94 "yacc.y"
  int nb; char var; int temp_val; 
 
-#line 126 "y.tab.h"
+#line 95 "yacc.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -137,4 +106,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+#endif /* !YY_YY_YACC_TAB_H_INCLUDED  */

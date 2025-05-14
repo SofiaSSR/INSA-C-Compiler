@@ -4,9 +4,12 @@
 #include <stdio.h>
 int var[26];
 %}
+
 D   [0-9]
+
 %%
 {D}+              {yylval.nb = atoi(yytext);  return tNB;}
+{D}+(\.{D}+)?([eE][-+]?{D}+)?  { yylval.nb = atof(yytext); return tNB; }
 "="               {return tEQ;}
 "{"               {return tOB;}
 "}"               {return tCB;}
@@ -26,16 +29,15 @@ bool              {return tBOOL;}
 "=="              {return tCOM;}
 "else if"         {return tELSEIF;}
 if                {return tIF;}
-{D}+[eE]{D}+      {return tEXP tNB[yytext] ;}
 ","               {return tCOMA;}
 "."               {return tPOINT;}
 "<"               {return tLESS;}
 ">"               {return tMORE;}
-[a-z]+            {return tID[yytex];}
+[a-z]+            {return tID[yytext];}
 " "               { }
 \t                { }
 \n                { }
-.                 { return " ERROR"; exit; }
+.                 { fprintf(stderr, "Unexpected character: %s\n", yytext); exit(1); }
 
 %%
 

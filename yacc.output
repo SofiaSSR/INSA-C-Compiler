@@ -1,0 +1,440 @@
+Terminaux inutilisés dans la grammaire
+
+    tOB
+    tCB
+    tWHILE
+    tVOID
+    tELSE
+    tMAIN
+    tBOOL
+    tCOM
+    tELSEIF
+    tIF
+    tEXP
+    tCOMA
+    tPOINT
+    tLESS
+    tMORE
+
+
+État 29 conflits: 1 décalage/réduction
+
+
+Grammaire
+
+    0 $accept: Compiler $end
+
+    1 Compiler: Expr Compiler
+    2         | Asg Compiler
+    3         | Asg
+    4         | Expr
+
+    5 Expr: Expr tPLUS DivMul
+    6     | Expr tMINUS DivMul
+    7     | DivMul
+
+    8 DivMul: DivMul tTIMES Terme
+    9       | DivMul tDIVIDE Terme
+   10       | Terme
+
+   11 Terme: tOP Expr tCP
+   12      | tNB
+   13      | tID
+
+   14 Asg: tINT tID tEQ Terme tSEM
+   15    | tINT tID tEQ Expr tSEM
+   16    | tID tEQ Expr tSEM
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+    $end (0) 0
+    error (256)
+    tEQ (258) 14 15 16
+    tOB (259)
+    tCB (260)
+    tSEM (261) 14 15 16
+    tWHILE (262)
+    tVOID (263)
+    tOP (264) 11
+    tCP (265) 11
+    tELSE (266)
+    tPLUS (267) 5
+    tMINUS (268) 6
+    tTIMES (269) 8
+    tDIVIDE (270) 9
+    tMAIN (271)
+    tBOOL (272)
+    tCOM (273)
+    tELSEIF (274)
+    tIF (275)
+    tEXP (276)
+    tCOMA (277)
+    tPOINT (278)
+    tLESS (279)
+    tMORE (280)
+    tINT (281) 14 15
+    tID <var> (282) 13 14 15 16
+    tNB <nb> (283) 12
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+    $accept (29)
+        à gauche: 0
+    Compiler (30)
+        à gauche: 1 2 3 4
+        à droite: 0 1 2
+    Expr <nb> (31)
+        à gauche: 5 6 7
+        à droite: 1 4 5 6 11 15 16
+    DivMul <nb> (32)
+        à gauche: 8 9 10
+        à droite: 5 6 7 8 9
+    Terme <nb> (33)
+        à gauche: 11 12 13
+        à droite: 8 9 10 14
+    Asg (34)
+        à gauche: 14 15 16
+        à droite: 2 3
+
+
+État 0
+
+    0 $accept: • Compiler $end
+
+    tOP   décalage et aller à l'état 1
+    tINT  décalage et aller à l'état 2
+    tID   décalage et aller à l'état 3
+    tNB   décalage et aller à l'état 4
+
+    Compiler  aller à l'état 5
+    Expr      aller à l'état 6
+    DivMul    aller à l'état 7
+    Terme     aller à l'état 8
+    Asg       aller à l'état 9
+
+
+État 1
+
+   11 Terme: tOP • Expr tCP
+
+    tOP  décalage et aller à l'état 1
+    tID  décalage et aller à l'état 10
+    tNB  décalage et aller à l'état 4
+
+    Expr    aller à l'état 11
+    DivMul  aller à l'état 7
+    Terme   aller à l'état 8
+
+
+État 2
+
+   14 Asg: tINT • tID tEQ Terme tSEM
+   15    | tINT • tID tEQ Expr tSEM
+
+    tID  décalage et aller à l'état 12
+
+
+État 3
+
+   13 Terme: tID •
+   16 Asg: tID • tEQ Expr tSEM
+
+    tEQ  décalage et aller à l'état 13
+
+    $défaut  réduction par utilisation de la règle 13 (Terme)
+
+
+État 4
+
+   12 Terme: tNB •
+
+    $défaut  réduction par utilisation de la règle 12 (Terme)
+
+
+État 5
+
+    0 $accept: Compiler • $end
+
+    $end  décalage et aller à l'état 14
+
+
+État 6
+
+    1 Compiler: Expr • Compiler
+    4         | Expr •
+    5 Expr: Expr • tPLUS DivMul
+    6     | Expr • tMINUS DivMul
+
+    tOP     décalage et aller à l'état 1
+    tPLUS   décalage et aller à l'état 15
+    tMINUS  décalage et aller à l'état 16
+    tINT    décalage et aller à l'état 2
+    tID     décalage et aller à l'état 3
+    tNB     décalage et aller à l'état 4
+
+    $défaut  réduction par utilisation de la règle 4 (Compiler)
+
+    Compiler  aller à l'état 17
+    Expr      aller à l'état 6
+    DivMul    aller à l'état 7
+    Terme     aller à l'état 8
+    Asg       aller à l'état 9
+
+
+État 7
+
+    7 Expr: DivMul •
+    8 DivMul: DivMul • tTIMES Terme
+    9       | DivMul • tDIVIDE Terme
+
+    tTIMES   décalage et aller à l'état 18
+    tDIVIDE  décalage et aller à l'état 19
+
+    $défaut  réduction par utilisation de la règle 7 (Expr)
+
+
+État 8
+
+   10 DivMul: Terme •
+
+    $défaut  réduction par utilisation de la règle 10 (DivMul)
+
+
+État 9
+
+    2 Compiler: Asg • Compiler
+    3         | Asg •
+
+    tOP   décalage et aller à l'état 1
+    tINT  décalage et aller à l'état 2
+    tID   décalage et aller à l'état 3
+    tNB   décalage et aller à l'état 4
+
+    $défaut  réduction par utilisation de la règle 3 (Compiler)
+
+    Compiler  aller à l'état 20
+    Expr      aller à l'état 6
+    DivMul    aller à l'état 7
+    Terme     aller à l'état 8
+    Asg       aller à l'état 9
+
+
+État 10
+
+   13 Terme: tID •
+
+    $défaut  réduction par utilisation de la règle 13 (Terme)
+
+
+État 11
+
+    5 Expr: Expr • tPLUS DivMul
+    6     | Expr • tMINUS DivMul
+   11 Terme: tOP Expr • tCP
+
+    tCP     décalage et aller à l'état 21
+    tPLUS   décalage et aller à l'état 15
+    tMINUS  décalage et aller à l'état 16
+
+
+État 12
+
+   14 Asg: tINT tID • tEQ Terme tSEM
+   15    | tINT tID • tEQ Expr tSEM
+
+    tEQ  décalage et aller à l'état 22
+
+
+État 13
+
+   16 Asg: tID tEQ • Expr tSEM
+
+    tOP  décalage et aller à l'état 1
+    tID  décalage et aller à l'état 10
+    tNB  décalage et aller à l'état 4
+
+    Expr    aller à l'état 23
+    DivMul  aller à l'état 7
+    Terme   aller à l'état 8
+
+
+État 14
+
+    0 $accept: Compiler $end •
+
+    $défaut  accepter
+
+
+État 15
+
+    5 Expr: Expr tPLUS • DivMul
+
+    tOP  décalage et aller à l'état 1
+    tID  décalage et aller à l'état 10
+    tNB  décalage et aller à l'état 4
+
+    DivMul  aller à l'état 24
+    Terme   aller à l'état 8
+
+
+État 16
+
+    6 Expr: Expr tMINUS • DivMul
+
+    tOP  décalage et aller à l'état 1
+    tID  décalage et aller à l'état 10
+    tNB  décalage et aller à l'état 4
+
+    DivMul  aller à l'état 25
+    Terme   aller à l'état 8
+
+
+État 17
+
+    1 Compiler: Expr Compiler •
+
+    $défaut  réduction par utilisation de la règle 1 (Compiler)
+
+
+État 18
+
+    8 DivMul: DivMul tTIMES • Terme
+
+    tOP  décalage et aller à l'état 1
+    tID  décalage et aller à l'état 10
+    tNB  décalage et aller à l'état 4
+
+    Terme  aller à l'état 26
+
+
+État 19
+
+    9 DivMul: DivMul tDIVIDE • Terme
+
+    tOP  décalage et aller à l'état 1
+    tID  décalage et aller à l'état 10
+    tNB  décalage et aller à l'état 4
+
+    Terme  aller à l'état 27
+
+
+État 20
+
+    2 Compiler: Asg Compiler •
+
+    $défaut  réduction par utilisation de la règle 2 (Compiler)
+
+
+État 21
+
+   11 Terme: tOP Expr tCP •
+
+    $défaut  réduction par utilisation de la règle 11 (Terme)
+
+
+État 22
+
+   14 Asg: tINT tID tEQ • Terme tSEM
+   15    | tINT tID tEQ • Expr tSEM
+
+    tOP  décalage et aller à l'état 1
+    tID  décalage et aller à l'état 10
+    tNB  décalage et aller à l'état 4
+
+    Expr    aller à l'état 28
+    DivMul  aller à l'état 7
+    Terme   aller à l'état 29
+
+
+État 23
+
+    5 Expr: Expr • tPLUS DivMul
+    6     | Expr • tMINUS DivMul
+   16 Asg: tID tEQ Expr • tSEM
+
+    tSEM    décalage et aller à l'état 30
+    tPLUS   décalage et aller à l'état 15
+    tMINUS  décalage et aller à l'état 16
+
+
+État 24
+
+    5 Expr: Expr tPLUS DivMul •
+    8 DivMul: DivMul • tTIMES Terme
+    9       | DivMul • tDIVIDE Terme
+
+    tTIMES   décalage et aller à l'état 18
+    tDIVIDE  décalage et aller à l'état 19
+
+    $défaut  réduction par utilisation de la règle 5 (Expr)
+
+
+État 25
+
+    6 Expr: Expr tMINUS DivMul •
+    8 DivMul: DivMul • tTIMES Terme
+    9       | DivMul • tDIVIDE Terme
+
+    tTIMES   décalage et aller à l'état 18
+    tDIVIDE  décalage et aller à l'état 19
+
+    $défaut  réduction par utilisation de la règle 6 (Expr)
+
+
+État 26
+
+    8 DivMul: DivMul tTIMES Terme •
+
+    $défaut  réduction par utilisation de la règle 8 (DivMul)
+
+
+État 27
+
+    9 DivMul: DivMul tDIVIDE Terme •
+
+    $défaut  réduction par utilisation de la règle 9 (DivMul)
+
+
+État 28
+
+    5 Expr: Expr • tPLUS DivMul
+    6     | Expr • tMINUS DivMul
+   15 Asg: tINT tID tEQ Expr • tSEM
+
+    tSEM    décalage et aller à l'état 31
+    tPLUS   décalage et aller à l'état 15
+    tMINUS  décalage et aller à l'état 16
+
+
+État 29
+
+   10 DivMul: Terme •
+   14 Asg: tINT tID tEQ Terme • tSEM
+
+    tSEM  décalage et aller à l'état 32
+
+    tSEM     [réduction par utilisation de la règle 10 (DivMul)]
+    $défaut  réduction par utilisation de la règle 10 (DivMul)
+
+
+État 30
+
+   16 Asg: tID tEQ Expr tSEM •
+
+    $défaut  réduction par utilisation de la règle 16 (Asg)
+
+
+État 31
+
+   15 Asg: tINT tID tEQ Expr tSEM •
+
+    $défaut  réduction par utilisation de la règle 15 (Asg)
+
+
+État 32
+
+   14 Asg: tINT tID tEQ Terme tSEM •
+
+    $défaut  réduction par utilisation de la règle 14 (Asg)

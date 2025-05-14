@@ -27,3 +27,5 @@ clean:
 test: $(BIN)
 	./$(BIN) < sample.c
 	
+debug:
+	bison -d -v $(YACC_SRC)
