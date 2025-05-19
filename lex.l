@@ -1,42 +1,40 @@
 %{
-#include "y.tab.h"
 #include <stdlib.h>
 #include <stdio.h>
-int var[26];
+#include "y.tab.h"
 %}
-D   [0-9]
 %%
-{D}+              {yylval.nb = atoi(yytext);  return tNB;}
-"="               {return tEQ;}
+-*[0-9]+(("E"|"e")[0-9]+)?     {yylval.nb = atoi(yytext);  return tNB;}
+"="               {return tASSIGN;}
 "{"               {return tOB;}
 "}"               {return tCB;}
 ";"               {return tSEM;}
-while             {return tWHILE;}
-void              {return tVOID;}
-int               {return tINT;}
 "("               {return tOP;}
 ")"               {return tCP;}
-else              {return tELSE;}
 "+"               {return tPLUS;}
 "-"               {return tMINUS;}
 "*"               {return tTIMES;}
 "/"               {return tDIVIDE;}
-main              {return tMAIN;}
-bool              {return tBOOL;}
-"=="              {return tCOM;}
-"else if"         {return tELSEIF;}
-if                {return tIF;}
-{D}+[eE]{D}+      {return tEXP tNB[yytext] ;}
-","               {return tCOMA;}
-"."               {return tPOINT;}
+"const"           {return tCONST;}
+"main"            {return tMAIN;}
+"if"              {return tIF;}
+"else"            {return tELSE;}
+"true"            {return tTRUE;}
+"false"           {return tFALSE;}
+"while"           {return tWHILE;}
+"void"            {return tVOID;}
+"int"             {return tINT;}
+"=="              {return tEQ;}
+"&&"              {return tAND;}
+"||"              {return tOR;}
+"!="              {return tNEQ;}
+","               {return tCOMMA;}
 "<"               {return tLESS;}
 ">"               {return tMORE;}
-[a-z]+            {return tID[yytex];}
+[a-zA-Z_][a-zA-Z0-9_]*            { strncpy(yylval.var, yytext, 32); return tID;}
 " "               { }
-\t                { }
-\n                { }
-.                 { return " ERROR"; exit; }
-
+"\t"                { }
+"\n"               { }
 %%
 
 int yywrap() {

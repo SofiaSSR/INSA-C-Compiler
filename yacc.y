@@ -2,116 +2,95 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <stdbool.h>
 #define MAX_VAR 128 
-
-char var[26];
+int var[26];
 int yylex(void);
 void yyerror(char *s);
 int last_st_index = 0;
-
+extern FILE* yyin;
+// extern entry_t symbol_table[MAX_SIZE_SYMTABLE];
+// extern int in_use ;
+// extern char current_type ;
+// extern struct asm_instruction asm_instr[500];
+extern int line_count;
 struct synb {
-    char id[32];
+   char id[32];
     int adress; 
     int init;
 };
-
 struct synb st[MAX_VAR];
-
 %}
-%union { int nb; char var; int temp_val; }
-%token  tEQ tOB tCB tSEM tWHILE tVOID tOP tCP tELSE tPLUS tMINUS tTIMES tDIVIDE tMAIN tBOOL tCOM tELSEIF tIF tEXP tCOMA tPOINT tLESS tMORE tINT
-%token <var> tID
+
+%union { int nb; char var[32];}
+%token tEQ tOB tCB tCONST tSEM tASSIGN tNEQ tAND tOR tWHILE tVOID tOP tCP tELSE tPLUS tMINUS tTIMES tDIVIDE tMAIN tBOOL tTRUE tFALSE tELSEIF tIF tEXP tCOMMA tPOINT tLESS tMORE tINT
 %token <nb> tNB
-%type <nb> Expr DivMul Terme 
+%token <var> tID
+%type Comp Body //Declaration NewVariable MultiDeclaration Type Expression Asg Term Condition ConditionBody
 %start Compiler
-
+%right tASSIGN
+%left tOR
+%left tAND 
+%left tEQ tNEQ
+%left tMORE tLESS
+%left tPLUS tMINUS
+%left tTIMES tDIVIDE
 %%
-Compiler :    Expr Compiler  { $1; }
-            | Expr { $1; } ;
+Compiler: Comp Compiler | Comp;
+Comp :    tINT tMAIN  { 
+                      printf("MAIN \n" ); 
+                    }
+                    tOP tCP tOB  Body tCB ; 
+                
+Body :        Expression Body | Expression;
+Expression :  tCONST | tINT;
 
-Expr :		  Expr tPLUS DivMul {
-                __asm__(
-                    "ADD $1, $1, $3"
-                );
-                free_last_temp();
-                $$ = $1; }
-            | Expr tMINUS DivMul  {
-                __asm__(
-                    "SUB $1, $1, $3"
-                );
-                free_last_temp();
-                $$ = $1; }
-            | DivMul     { $$ = $1; };
+Declaration : NewVariable Declaration | NewVariable ;
 
-DivMul :      DivMul tTIMES Terme   {
-                __asm__(
-                    "MUL $1, $1, $3"
-                );
-                free_last_temp();
-                $$ = $1; }
-            | DivMul tDIVIDE Terme {
-                __asm__(
-                    "DIV $1, $1, $3"
-                );
-                free_last_temp();
-                $$ = $1;  }
-            | Terme { $$ = $1; };
+NewVariable:  Type tID { printf("DEC\n"); var_insert($2); } MultiDeclaration
+            | Type tID { printf("DEC\n"); var_insert($2); } tSEM;
 
-Terme:        tOP  Expr tCP { $$ = $2; }
-            | tNB           { $$ = temp_var_assign($1); }
-            | tID           { $$ = var_lookup($1); };
+MultiDeclaration: tCOMMA tID { printf("MULDEC\n"); var_insert($2); } MultiDeclaration
+                | tCOMMA tID { printf("MULDEC end\n"); var_insert($2); } tSEM;
+              
+Type :        tCONST | tINT;
 
-Asg:          tINT tID tEQ Terme tSEM   { 
-                __asm__(
-                    "COP var_lookup($2), $2, $4"
-                );
-                var_insert($2, $4);
-                free_last_temp(); }
-            | tINT tID tEQ Expr tSEM   { var_insert($2, $4); 
-            free_last_temp();}
-            | tID tEQ Expr tSEM   { 
-                __asm__(
-                    "COP var_lookup($1), $1, $3"
-                );
-                var_assign($1, $3);
-                free_last_temp(); };
+Expression :  Asg tSEM  { printf("ASSIGN\n"); } | Condition { printf("CONDITION\n"); };
 
-/* Bool:         tID tCOM tID { var_lookup($1) == var_lookup($3); }
-            | tNB tCOM tNB { $1 == $3; }
-            | tNB tCOM tID { $1 == var_lookup($3); }
-            | tID tLESS tID { var_lookup($1) < var_lookup($3); }
-            | tNB tLESS tNB { $1 < $3; }
-            | tNB tLESS tID { $1 < var_lookup($3); }
-            | tID tMORE tID { var_lookup($1) > var_lookup($3); }
-            | tNB tMORE tNB { $1 > $3; }
-            | tNB tMORE tID { $1 > var_lookup($3); }
-            | tID tLESS tEQ tID {  var_lookup($1) <= var_lookup($4); } 
-            | tNB tLESS tEQ tNB { $1 <= $4; }
-            | tNB tLESS tEQ tID { $1 <= var_lookup($4); }
-            | tID tMORE tEQ tID { var_lookup($1) >= var_lookup($4);} 
-            | tNB tMORE tEQ tNB { $1 >= $4; }
-            | tNB tMORE tEQ tID { $1 >= var_lookup($4); } ;
-            | tBOOL tCOM tBOOL { $1 == $3; } */
-/*
+Asg:          tID tASSIGN Expression
+              {  
+                int id_index = var_lookup($1);
+                symbol_table[id_index].inited = 1;
+/*                 asm_add("MOV", id_index, in_use-1, -1 );
+                rm_from_symtab(); */
+               };
 
-Alg:         Alg Asg {$1 $2; }
-            | Asg {$1; } ;
-Else:          tELSE tOB Alg tCB tSEM {$3; } ;
+Term:         Term tPLUS Term { printf("PLUS ");} // add_operation("ADD");}
+            | Term tMINUS Term { printf("MINUS "); } //add_operation("SUB");}
+            | Term tDIVIDE Term { printf("DIVIDE ");} // add_operation("DIV");}
+            | Term tTIMES Term { printf("TIMES "); } //add_operation("MUL");}
+            | Term tEQ Term { printf("EQ ");} // add_operation("EQU");}
+            | Term tMORE Term { printf("MORE "); } //add_operation("GRE");}
+            | Term tLESS Term { printf("LESS ");} // add_operation("LES");} 
+            | Term tNEQ Term { printf("NEQ "); } //add_operation("NEQ");}
+            | Term tAND Term { printf("AND "); } //add_operation("AND");}
+            | Term tOR  Term { printf("OR  "); } //add_operation("OR"); }
+            | tOP Term tCP 
+            | tTRUE  { printf("TRUE "); } //asm_add("STO", add_temp_to_symtable(), 1, -1); } 
+            | tFALSE { printf("FALSE "); } // asm_add("STO", add_temp_to_symtable(), 0, -1); }
+            | tID { printf("ID ");} // asm_add("MOV", add_temp_to_symtable(), get_index($1), -1); }
+            | tNB { printf("NB "); }; //asm_add("STO", add_temp_to_symtable(), $1, -1); };
 
-ElseIf:        tELSE tIF tOP Bool tCP tOB Alg tCB {$3; }
+Condition:    tIF {printf("IF \n");} tOP Term tCP tOB ConditionBody tCB
+            | tWHILE {printf("WHILE \n");} tOP Term tCP tOB ConditionBody tCB;
 
-If:           tIF tOP Bool tCP tOB Alg tCB tSEM {$6; }
-            | If Else {}
-            | If ElseIf { } ; */
-
+ConditionBody: Expression ConditionBody | Expression;
 %%
 
 void free_last_temp(void){
     st[last_st_index].init = 0;
     last_st_index = last_st_index - 1;
 }
-
 void yyerror(char *s) { fprintf(stderr, "%s\n", s); }
 
 

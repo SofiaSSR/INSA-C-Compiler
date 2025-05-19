@@ -7,23 +7,22 @@ HFLAGS=-dy
 
 BIN=compiler
 
+OBJ=y.tab.o lex.yy.o
 
-$(BIN): y.tab.c
-	$(CC) $(CFLAGS) y.tab.c lex.yy.c -o $(BIN)
+new: clean $(BIN)
 
+all: $(BIN)
 
 lex.yy.c: $(LEX_SRC)
 	lex $(LEX_SRC)
 
 y.tab.c:  $(YACC_SRC)
-	yacc -d $(YACC_SRC)
-	flex $(LEX_SRC)
-	bison $(HFLAGS) $(YACC_SRC)
+	yacc -v -g -t -d $<
 
+$(BIN): $(OBJ) 
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
 
 clean:
-	rm -rf ake testlex.yy.c $(BIN)
+	rm $(OBJ) y.tab.c y.tab.h lex.yy.c
 
-test: $(BIN)
-	./$(BIN) < sample.c
 	

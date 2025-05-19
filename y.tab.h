@@ -39,7 +39,7 @@
 # define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
@@ -57,29 +57,35 @@ extern int yydebug;
     tEQ = 258,                     /* tEQ  */
     tOB = 259,                     /* tOB  */
     tCB = 260,                     /* tCB  */
-    tSEM = 261,                    /* tSEM  */
-    tWHILE = 262,                  /* tWHILE  */
-    tVOID = 263,                   /* tVOID  */
-    tOP = 264,                     /* tOP  */
-    tCP = 265,                     /* tCP  */
-    tELSE = 266,                   /* tELSE  */
-    tPLUS = 267,                   /* tPLUS  */
-    tMINUS = 268,                  /* tMINUS  */
-    tTIMES = 269,                  /* tTIMES  */
-    tDIVIDE = 270,                 /* tDIVIDE  */
-    tMAIN = 271,                   /* tMAIN  */
-    tBOOL = 272,                   /* tBOOL  */
-    tCOM = 273,                    /* tCOM  */
-    tELSEIF = 274,                 /* tELSEIF  */
-    tIF = 275,                     /* tIF  */
-    tEXP = 276,                    /* tEXP  */
-    tCOMA = 277,                   /* tCOMA  */
-    tPOINT = 278,                  /* tPOINT  */
-    tLESS = 279,                   /* tLESS  */
-    tMORE = 280,                   /* tMORE  */
-    tINT = 281,                    /* tINT  */
-    tID = 282,                     /* tID  */
-    tNB = 283                      /* tNB  */
+    tCONST = 261,                  /* tCONST  */
+    tSEM = 262,                    /* tSEM  */
+    tASSIGN = 263,                 /* tASSIGN  */
+    tNEQ = 264,                    /* tNEQ  */
+    tAND = 265,                    /* tAND  */
+    tOR = 266,                     /* tOR  */
+    tWHILE = 267,                  /* tWHILE  */
+    tVOID = 268,                   /* tVOID  */
+    tOP = 269,                     /* tOP  */
+    tCP = 270,                     /* tCP  */
+    tELSE = 271,                   /* tELSE  */
+    tPLUS = 272,                   /* tPLUS  */
+    tMINUS = 273,                  /* tMINUS  */
+    tTIMES = 274,                  /* tTIMES  */
+    tDIVIDE = 275,                 /* tDIVIDE  */
+    tMAIN = 276,                   /* tMAIN  */
+    tBOOL = 277,                   /* tBOOL  */
+    tTRUE = 278,                   /* tTRUE  */
+    tFALSE = 279,                  /* tFALSE  */
+    tELSEIF = 280,                 /* tELSEIF  */
+    tIF = 281,                     /* tIF  */
+    tEXP = 282,                    /* tEXP  */
+    tCOMMA = 283,                  /* tCOMMA  */
+    tPOINT = 284,                  /* tPOINT  */
+    tLESS = 285,                   /* tLESS  */
+    tMORE = 286,                   /* tMORE  */
+    tINT = 287,                    /* tINT  */
+    tNB = 288,                     /* tNB  */
+    tID = 289                      /* tID  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -91,38 +97,44 @@ extern int yydebug;
 #define tEQ 258
 #define tOB 259
 #define tCB 260
-#define tSEM 261
-#define tWHILE 262
-#define tVOID 263
-#define tOP 264
-#define tCP 265
-#define tELSE 266
-#define tPLUS 267
-#define tMINUS 268
-#define tTIMES 269
-#define tDIVIDE 270
-#define tMAIN 271
-#define tBOOL 272
-#define tCOM 273
-#define tELSEIF 274
-#define tIF 275
-#define tEXP 276
-#define tCOMA 277
-#define tPOINT 278
-#define tLESS 279
-#define tMORE 280
-#define tINT 281
-#define tID 282
-#define tNB 283
+#define tCONST 261
+#define tSEM 262
+#define tASSIGN 263
+#define tNEQ 264
+#define tAND 265
+#define tOR 266
+#define tWHILE 267
+#define tVOID 268
+#define tOP 269
+#define tCP 270
+#define tELSE 271
+#define tPLUS 272
+#define tMINUS 273
+#define tTIMES 274
+#define tDIVIDE 275
+#define tMAIN 276
+#define tBOOL 277
+#define tTRUE 278
+#define tFALSE 279
+#define tELSEIF 280
+#define tIF 281
+#define tEXP 282
+#define tCOMMA 283
+#define tPOINT 284
+#define tLESS 285
+#define tMORE 286
+#define tINT 287
+#define tNB 288
+#define tID 289
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 22 "yacc.y"
- int nb; char var; int temp_val; 
+#line 25 "yacc.y"
+ int nb; char var[32];
 
-#line 126 "y.tab.h"
+#line 138 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
