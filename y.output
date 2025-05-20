@@ -1,15 +1,3 @@
-Non-terminaux inutiles dans la grammaire
-
-    Declaration
-    NewVariable
-    $@2
-    $@3
-    MultiDeclaration
-    $@4
-    $@5
-    Type
-
-
 Terminaux inutilisés dans la grammaire
 
     tVOID
@@ -17,33 +5,7 @@ Terminaux inutilisés dans la grammaire
     tBOOL
     tELSEIF
     tEXP
-    tCOMMA
     tPOINT
-
-
-Règles inutiles dans la grammaire
-
-   33 Declaration: NewVariable Declaration
-   34            | NewVariable
-
-   35 $@2: ε
-
-   36 NewVariable: Type tID $@2 MultiDeclaration
-
-   37 $@3: ε
-
-   38 NewVariable: Type tID $@3 tSEM
-
-   39 $@4: ε
-
-   40 MultiDeclaration: tCOMMA tID $@4 MultiDeclaration
-
-   41 $@5: ε
-
-   42 MultiDeclaration: tCOMMA tID $@5 tSEM
-
-   43 Type: tCONST
-   44     | tINT
 
 
 Grammaire
@@ -55,82 +17,102 @@ Grammaire
 
     3 $@1: ε
 
-    4 Comp: tINT tMAIN $@1 tOP tCP tOB Body tCB
+    4 Comp: tINT tMAIN $@1 tOP tCP tOB Declaration Body tCB
 
     5 Body: Expression Body
     6     | Expression
 
-    7 Expression: tCONST
-    8           | tINT
-    9           | Asg tSEM
-   10           | Condition
+    7 Declaration: NewVariable Declaration
+    8            | NewVariable
 
-   11 Asg: tID tASSIGN Expression
+    9 $@2: ε
 
-   12 Term: Term tPLUS Term
-   13     | Term tMINUS Term
-   14     | Term tDIVIDE Term
-   15     | Term tTIMES Term
-   16     | Term tEQ Term
-   17     | Term tMORE Term
-   18     | Term tLESS Term
-   19     | Term tNEQ Term
-   20     | Term tAND Term
-   21     | Term tOR Term
-   22     | tOP Term tCP
-   23     | tTRUE
-   24     | tFALSE
-   25     | tID
-   26     | tNB
+   10 NewVariable: Type tID $@2 MultiDeclaration
 
-   27 $@6: ε
+   11 $@3: ε
 
-   28 Condition: tIF $@6 tOP Term tCP tOB ConditionBody tCB
+   12 NewVariable: Type tID $@3 tSEM
 
-   29 $@7: ε
+   13 $@4: ε
 
-   30 Condition: tWHILE $@7 tOP Term tCP tOB ConditionBody tCB
+   14 MultiDeclaration: tCOMMA tID $@4 MultiDeclaration
 
-   31 ConditionBody: Expression ConditionBody
-   32              | Expression
+   15 $@5: ε
+
+   16 MultiDeclaration: tCOMMA tID $@5 tSEM
+
+   17 Type: tCONST
+   18     | tINT
+
+   19 Expression: Asg tSEM
+   20           | Condition
+
+   21 Asg: tID tASSIGN Term
+
+   22 Term: Term tPLUS Term
+   23     | Term tMINUS Term
+   24     | Term tDIVIDE Term
+   25     | Term tTIMES Term
+   26     | Term tEQ Term
+   27     | Term tMORE Term
+   28     | Term tLESS Term
+   29     | Term tNEQ Term
+   30     | Term tAND Term
+   31     | Term tOR Term
+   32     | tOP Term tCP
+   33     | tTRUE
+   34     | tFALSE
+   35     | tID
+   36     | tNB
+
+   37 $@6: ε
+
+   38 Condition: tIF $@6 tOP Term tCP tOB ConditionBody tCB
+
+   39 $@7: ε
+
+   40 Condition: tWHILE $@7 tOP Term tCP tOB ConditionBody tCB
+
+   41 ConditionBody: Expression ConditionBody
+   42              | Expression
 
 
 Terminaux, suivis des règles où ils apparaissent
 
     $end (0) 0
     error (256)
-    tEQ (258) 16
-    tOB (259) 4 28 30
-    tCB (260) 4 28 30
-    tCONST (261) 7
-    tSEM (262) 9
-    tASSIGN (263) 11
-    tNEQ (264) 19
-    tAND (265) 20
-    tOR (266) 21
-    tWHILE (267) 30
+    tEQ (258) 26
+    tOB (259) 4 38 40
+    tCB (260) 4 38 40
+    tCONST (261) 17
+    tSEM (262) 12 16 19
+    tASSIGN (263) 21
+    tNEQ (264) 29
+    tAND (265) 30
+    tOR (266) 31
+    tWHILE (267) 40
     tVOID (268)
-    tOP (269) 4 22 28 30
-    tCP (270) 4 22 28 30
+    tOP (269) 4 32 38 40
+    tCP (270) 4 32 38 40
     tELSE (271)
-    tPLUS (272) 12
-    tMINUS (273) 13
-    tTIMES (274) 15
-    tDIVIDE (275) 14
+    tPLUS (272) 22
+    tMINUS (273) 23
+    tTIMES (274) 25
+    tDIVIDE (275) 24
     tMAIN (276) 4
     tBOOL (277)
-    tTRUE (278) 23
-    tFALSE (279) 24
+    tTRUE (278) 33
+    tFALSE (279) 34
     tELSEIF (280)
-    tIF (281) 28
+    tIF (281) 38
     tEXP (282)
-    tCOMMA (283)
+    tCOMMA (283) 14 16
     tPOINT (284)
-    tLESS (285) 18
-    tMORE (286) 17
-    tINT (287) 4 8
-    tNB <nb> (288) 26
-    tID <var> (289) 11 25
+    tLESS (285) 28
+    tMORE (286) 27
+    tINT (287) 4 18
+    tNB <nb> (288) 36
+    tID <var> (289) 10 12 14 16 21 35
 
 
 Non-terminaux, suivis des règles où ils apparaissent
@@ -149,27 +131,51 @@ Non-terminaux, suivis des règles où ils apparaissent
     Body (39)
         à gauche: 5 6
         à droite: 4 5
-    Expression (40)
-        à gauche: 7 8 9 10
-        à droite: 5 6 11 31 32
-    Asg (41)
-        à gauche: 11
-        à droite: 9
-    Term (42)
-        à gauche: 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26
-        à droite: 12 13 14 15 16 17 18 19 20 21 22 28 30
-    Condition (43)
-        à gauche: 28 30
+    Declaration (40)
+        à gauche: 7 8
+        à droite: 4 7
+    NewVariable (41)
+        à gauche: 10 12
+        à droite: 7 8
+    $@2 (42)
+        à gauche: 9
         à droite: 10
-    $@6 (44)
-        à gauche: 27
-        à droite: 28
-    $@7 (45)
-        à gauche: 29
-        à droite: 30
-    ConditionBody (46)
-        à gauche: 31 32
-        à droite: 28 30 31
+    $@3 (43)
+        à gauche: 11
+        à droite: 12
+    MultiDeclaration (44)
+        à gauche: 14 16
+        à droite: 10 14
+    $@4 (45)
+        à gauche: 13
+        à droite: 14
+    $@5 (46)
+        à gauche: 15
+        à droite: 16
+    Type (47)
+        à gauche: 17 18
+        à droite: 10 12
+    Expression (48)
+        à gauche: 19 20
+        à droite: 5 6 41 42
+    Asg (49)
+        à gauche: 21
+        à droite: 19
+    Term (50)
+        à gauche: 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36
+        à droite: 21 22 23 24 25 26 27 28 29 30 31 32 38 40
+    Condition (51)
+        à gauche: 38 40
+        à droite: 20
+    $@6 (52)
+        à gauche: 37
+        à droite: 38
+    $@7 (53)
+        à gauche: 39
+        à droite: 40
+    ConditionBody (54)
+        à gauche: 41 42
+        à droite: 38 40 41
 
 
 État 0
@@ -184,7 +190,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 1
 
-    4 Comp: tINT • tMAIN $@1 tOP tCP tOB Body tCB
+    4 Comp: tINT • tMAIN $@1 tOP tCP tOB Declaration Body tCB
 
     tMAIN  décalage et aller à l'état 4
 
@@ -211,7 +217,7 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 4
 
-    4 Comp: tINT tMAIN • $@1 tOP tCP tOB Body tCB
+    4 Comp: tINT tMAIN • $@1 tOP tCP tOB Declaration Body tCB
 
     $défaut  réduction par utilisation de la règle 3 ($@1)
 
@@ -234,776 +240,919 @@ Non-terminaux, suivis des règles où ils apparaissent
 
 État 7
 
-    4 Comp: tINT tMAIN $@1 • tOP tCP tOB Body tCB
+    4 Comp: tINT tMAIN $@1 • tOP tCP tOB Declaration Body tCB
 
     tOP  décalage et aller à l'état 8
 
 
 État 8
 
-    4 Comp: tINT tMAIN $@1 tOP • tCP tOB Body tCB
+    4 Comp: tINT tMAIN $@1 tOP • tCP tOB Declaration Body tCB
 
     tCP  décalage et aller à l'état 9
 
 
 État 9
 
-    4 Comp: tINT tMAIN $@1 tOP tCP • tOB Body tCB
+    4 Comp: tINT tMAIN $@1 tOP tCP • tOB Declaration Body tCB
 
     tOB  décalage et aller à l'état 10
 
 
 État 10
 
-    4 Comp: tINT tMAIN $@1 tOP tCP tOB • Body tCB
+    4 Comp: tINT tMAIN $@1 tOP tCP tOB • Declaration Body tCB
 
     tCONST  décalage et aller à l'état 11
-    tWHILE  décalage et aller à l'état 12
-    tIF     décalage et aller à l'état 13
-    tINT    décalage et aller à l'état 14
-    tID     décalage et aller à l'état 15
+    tINT    décalage et aller à l'état 12
 
-    Body        aller à l'état 16
-    Expression  aller à l'état 17
-    Asg         aller à l'état 18
-    Condition   aller à l'état 19
+    Declaration  aller à l'état 13
+    NewVariable  aller à l'état 14
+    Type         aller à l'état 15
 
 
 État 11
 
-    7 Expression: tCONST •
+   17 Type: tCONST •
 
-    $défaut  réduction par utilisation de la règle 7 (Expression)
+    $défaut  réduction par utilisation de la règle 17 (Type)
 
 
 État 12
 
-   30 Condition: tWHILE • $@7 tOP Term tCP tOB ConditionBody tCB
+   18 Type: tINT •
 
-    $défaut  réduction par utilisation de la règle 29 ($@7)
-
-    $@7  aller à l'état 20
+    $défaut  réduction par utilisation de la règle 18 (Type)
 
 
 État 13
 
-   28 Condition: tIF • $@6 tOP Term tCP tOB ConditionBody tCB
+    4 Comp: tINT tMAIN $@1 tOP tCP tOB Declaration • Body tCB
 
-    $défaut  réduction par utilisation de la règle 27 ($@6)
+    tWHILE  décalage et aller à l'état 16
+    tIF     décalage et aller à l'état 17
+    tID     décalage et aller à l'état 18
 
-    $@6  aller à l'état 21
+    Body        aller à l'état 19
+    Expression  aller à l'état 20
+    Asg         aller à l'état 21
+    Condition   aller à l'état 22
 
 
 État 14
 
-    8 Expression: tINT •
+    7 Declaration: NewVariable • Declaration
+    8            | NewVariable •
 
-    $défaut  réduction par utilisation de la règle 8 (Expression)
+    tCONST  décalage et aller à l'état 11
+    tINT    décalage et aller à l'état 12
+
+    $défaut  réduction par utilisation de la règle 8 (Declaration)
+
+    Declaration  aller à l'état 23
+    NewVariable  aller à l'état 14
+    Type         aller à l'état 15
 
 
 État 15
 
-   11 Asg: tID • tASSIGN Expression
+   10 NewVariable: Type • tID $@2 MultiDeclaration
+   12            | Type • tID $@3 tSEM
 
-    tASSIGN  décalage et aller à l'état 22
+    tID  décalage et aller à l'état 24
 
 
 État 16
 
-    4 Comp: tINT tMAIN $@1 tOP tCP tOB Body • tCB
+   40 Condition: tWHILE • $@7 tOP Term tCP tOB ConditionBody tCB
 
-    tCB  décalage et aller à l'état 23
+    $défaut  réduction par utilisation de la règle 39 ($@7)
+
+    $@7  aller à l'état 25
 
 
 État 17
 
-    5 Body: Expression • Body
-    6     | Expression •
+   38 Condition: tIF • $@6 tOP Term tCP tOB ConditionBody tCB
 
-    tCONST  décalage et aller à l'état 11
-    tWHILE  décalage et aller à l'état 12
-    tIF     décalage et aller à l'état 13
-    tINT    décalage et aller à l'état 14
-    tID     décalage et aller à l'état 15
+    $défaut  réduction par utilisation de la règle 37 ($@6)
 
-    $défaut  réduction par utilisation de la règle 6 (Body)
-
-    Body        aller à l'état 24
-    Expression  aller à l'état 17
-    Asg         aller à l'état 18
-    Condition   aller à l'état 19
+    $@6  aller à l'état 26
 
 
 État 18
 
-    9 Expression: Asg • tSEM
+   21 Asg: tID • tASSIGN Term
 
-    tSEM  décalage et aller à l'état 25
+    tASSIGN  décalage et aller à l'état 27
 
 
 État 19
 
-   10 Expression: Condition •
+    4 Comp: tINT tMAIN $@1 tOP tCP tOB Declaration Body • tCB
 
-    $défaut  réduction par utilisation de la règle 10 (Expression)
+    tCB  décalage et aller à l'état 28
 
 
 État 20
 
-   30 Condition: tWHILE $@7 • tOP Term tCP tOB ConditionBody tCB
+    5 Body: Expression • Body
+    6     | Expression •
 
-    tOP  décalage et aller à l'état 26
+    tWHILE  décalage et aller à l'état 16
+    tIF     décalage et aller à l'état 17
+    tID     décalage et aller à l'état 18
+
+    $défaut  réduction par utilisation de la règle 6 (Body)
+
+    Body        aller à l'état 29
+    Expression  aller à l'état 20
+    Asg         aller à l'état 21
+    Condition   aller à l'état 22
 
 
 État 21
 
-   28 Condition: tIF $@6 • tOP Term tCP tOB ConditionBody tCB
+   19 Expression: Asg • tSEM
 
-    tOP  décalage et aller à l'état 27
+    tSEM  décalage et aller à l'état 30
 
 
 État 22
 
-   11 Asg: tID tASSIGN • Expression
+   20 Expression: Condition •
 
-    tCONST  décalage et aller à l'état 11
-    tWHILE  décalage et aller à l'état 12
-    tIF     décalage et aller à l'état 13
-    tINT    décalage et aller à l'état 14
-    tID     décalage et aller à l'état 15
-
-    Expression  aller à l'état 28
-    Asg         aller à l'état 18
-    Condition   aller à l'état 19
+    $défaut  réduction par utilisation de la règle 20 (Expression)
 
 
 État 23
 
-    4 Comp: tINT tMAIN $@1 tOP tCP tOB Body tCB •
+    7 Declaration: NewVariable Declaration •
+
+    $défaut  réduction par utilisation de la règle 7 (Declaration)
+
+
+État 24
+
+   10 NewVariable: Type tID • $@2 MultiDeclaration
+   12            | Type tID • $@3 tSEM
+
+    tSEM     réduction par utilisation de la règle 11 ($@3)
+    $défaut  réduction par utilisation de la règle 9 ($@2)
+
+    $@2  aller à l'état 31
+    $@3  aller à l'état 32
+
+
+État 25
+
+   40 Condition: tWHILE $@7 • tOP Term tCP tOB ConditionBody tCB
+
+    tOP  décalage et aller à l'état 33
+
+
+État 26
+
+   38 Condition: tIF $@6 • tOP Term tCP tOB ConditionBody tCB
+
+    tOP  décalage et aller à l'état 34
+
+
+État 27
+
+   21 Asg: tID tASSIGN • Term
+
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
+
+    Term  aller à l'état 40
+
+
+État 28
+
+    4 Comp: tINT tMAIN $@1 tOP tCP tOB Declaration Body tCB •
 
     $défaut  réduction par utilisation de la règle 4 (Comp)
 
 
-État 24
+État 29
 
     5 Body: Expression Body •
 
     $défaut  réduction par utilisation de la règle 5 (Body)
 
 
-État 25
-
-    9 Expression: Asg tSEM •
-
-    $défaut  réduction par utilisation de la règle 9 (Expression)
-
-
-État 26
-
-   30 Condition: tWHILE $@7 tOP • Term tCP tOB ConditionBody tCB
-
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 34
-
-
-État 27
-
-   28 Condition: tIF $@6 tOP • Term tCP tOB ConditionBody tCB
-
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 35
-
-
-État 28
-
-   11 Asg: tID tASSIGN Expression •
-
-    $défaut  réduction par utilisation de la règle 11 (Asg)
-
-
-État 29
-
-   22 Term: tOP • Term tCP
-
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 36
-
-
 État 30
 
-   23 Term: tTRUE •
+   19 Expression: Asg tSEM •
 
-    $défaut  réduction par utilisation de la règle 23 (Term)
+    $défaut  réduction par utilisation de la règle 19 (Expression)
 
 
 État 31
 
-   24 Term: tFALSE •
+   10 NewVariable: Type tID $@2 • MultiDeclaration
 
-    $défaut  réduction par utilisation de la règle 24 (Term)
+    tCOMMA  décalage et aller à l'état 41
+
+    MultiDeclaration  aller à l'état 42
 
 
 État 32
 
-   26 Term: tNB •
+   12 NewVariable: Type tID $@3 • tSEM
 
-    $défaut  réduction par utilisation de la règle 26 (Term)
+    tSEM  décalage et aller à l'état 43
 
 
 État 33
 
-   25 Term: tID •
+   40 Condition: tWHILE $@7 tOP • Term tCP tOB ConditionBody tCB
 
-    $défaut  réduction par utilisation de la règle 25 (Term)
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
+
+    Term  aller à l'état 44
 
 
 État 34
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
-   30 Condition: tWHILE $@7 tOP Term • tCP tOB ConditionBody tCB
+   38 Condition: tIF $@6 tOP • Term tCP tOB ConditionBody tCB
 
-    tEQ      décalage et aller à l'état 37
-    tNEQ     décalage et aller à l'état 38
-    tAND     décalage et aller à l'état 39
-    tOR      décalage et aller à l'état 40
-    tCP      décalage et aller à l'état 41
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-    tLESS    décalage et aller à l'état 46
-    tMORE    décalage et aller à l'état 47
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
+
+    Term  aller à l'état 45
 
 
 État 35
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
-   28 Condition: tIF $@6 tOP Term • tCP tOB ConditionBody tCB
+   32 Term: tOP • Term tCP
 
-    tEQ      décalage et aller à l'état 37
-    tNEQ     décalage et aller à l'état 38
-    tAND     décalage et aller à l'état 39
-    tOR      décalage et aller à l'état 40
-    tCP      décalage et aller à l'état 48
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-    tLESS    décalage et aller à l'état 46
-    tMORE    décalage et aller à l'état 47
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
+
+    Term  aller à l'état 46
 
 
 État 36
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
-   22     | tOP Term • tCP
+   33 Term: tTRUE •
 
-    tEQ      décalage et aller à l'état 37
-    tNEQ     décalage et aller à l'état 38
-    tAND     décalage et aller à l'état 39
-    tOR      décalage et aller à l'état 40
-    tCP      décalage et aller à l'état 49
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-    tLESS    décalage et aller à l'état 46
-    tMORE    décalage et aller à l'état 47
+    $défaut  réduction par utilisation de la règle 33 (Term)
 
 
 État 37
 
-   16 Term: Term tEQ • Term
+   34 Term: tFALSE •
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 50
+    $défaut  réduction par utilisation de la règle 34 (Term)
 
 
 État 38
 
-   19 Term: Term tNEQ • Term
+   36 Term: tNB •
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 51
+    $défaut  réduction par utilisation de la règle 36 (Term)
 
 
 État 39
 
-   20 Term: Term tAND • Term
+   35 Term: tID •
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 52
+    $défaut  réduction par utilisation de la règle 35 (Term)
 
 
 État 40
 
-   21 Term: Term tOR • Term
+   21 Asg: tID tASSIGN Term •
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
+    tEQ      décalage et aller à l'état 47
+    tNEQ     décalage et aller à l'état 48
+    tAND     décalage et aller à l'état 49
+    tOR      décalage et aller à l'état 50
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
 
-    Term  aller à l'état 53
+    $défaut  réduction par utilisation de la règle 21 (Asg)
 
 
 État 41
 
-   30 Condition: tWHILE $@7 tOP Term tCP • tOB ConditionBody tCB
+   14 MultiDeclaration: tCOMMA • tID $@4 MultiDeclaration
+   16                 | tCOMMA • tID $@5 tSEM
 
-    tOB  décalage et aller à l'état 54
+    tID  décalage et aller à l'état 57
 
 
 État 42
 
-   12 Term: Term tPLUS • Term
+   10 NewVariable: Type tID $@2 MultiDeclaration •
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 55
+    $défaut  réduction par utilisation de la règle 10 (NewVariable)
 
 
 État 43
 
-   13 Term: Term tMINUS • Term
+   12 NewVariable: Type tID $@3 tSEM •
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 56
+    $défaut  réduction par utilisation de la règle 12 (NewVariable)
 
 
 État 44
 
-   15 Term: Term tTIMES • Term
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
+   40 Condition: tWHILE $@7 tOP Term • tCP tOB ConditionBody tCB
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 57
+    tEQ      décalage et aller à l'état 47
+    tNEQ     décalage et aller à l'état 48
+    tAND     décalage et aller à l'état 49
+    tOR      décalage et aller à l'état 50
+    tCP      décalage et aller à l'état 58
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
 
 
 État 45
 
-   14 Term: Term tDIVIDE • Term
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
+   38 Condition: tIF $@6 tOP Term • tCP tOB ConditionBody tCB
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 58
+    tEQ      décalage et aller à l'état 47
+    tNEQ     décalage et aller à l'état 48
+    tAND     décalage et aller à l'état 49
+    tOR      décalage et aller à l'état 50
+    tCP      décalage et aller à l'état 59
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
 
 
 État 46
 
-   18 Term: Term tLESS • Term
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
+   32     | tOP Term • tCP
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
-
-    Term  aller à l'état 59
+    tEQ      décalage et aller à l'état 47
+    tNEQ     décalage et aller à l'état 48
+    tAND     décalage et aller à l'état 49
+    tOR      décalage et aller à l'état 50
+    tCP      décalage et aller à l'état 60
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
 
 
 État 47
 
-   17 Term: Term tMORE • Term
+   26 Term: Term tEQ • Term
 
-    tOP     décalage et aller à l'état 29
-    tTRUE   décalage et aller à l'état 30
-    tFALSE  décalage et aller à l'état 31
-    tNB     décalage et aller à l'état 32
-    tID     décalage et aller à l'état 33
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    Term  aller à l'état 60
+    Term  aller à l'état 61
 
 
 État 48
 
-   28 Condition: tIF $@6 tOP Term tCP • tOB ConditionBody tCB
+   29 Term: Term tNEQ • Term
 
-    tOB  décalage et aller à l'état 61
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
+
+    Term  aller à l'état 62
 
 
 État 49
 
-   22 Term: tOP Term tCP •
+   30 Term: Term tAND • Term
 
-    $défaut  réduction par utilisation de la règle 22 (Term)
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
+
+    Term  aller à l'état 63
 
 
 État 50
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   16     | Term tEQ Term •
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   31 Term: Term tOR • Term
 
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-    tLESS    décalage et aller à l'état 46
-    tMORE    décalage et aller à l'état 47
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    $défaut  réduction par utilisation de la règle 16 (Term)
+    Term  aller à l'état 64
 
 
 État 51
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   19     | Term tNEQ Term •
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   22 Term: Term tPLUS • Term
 
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-    tLESS    décalage et aller à l'état 46
-    tMORE    décalage et aller à l'état 47
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    $défaut  réduction par utilisation de la règle 19 (Term)
+    Term  aller à l'état 65
 
 
 État 52
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   20     | Term tAND Term •
-   21     | Term • tOR Term
+   23 Term: Term tMINUS • Term
 
-    tEQ      décalage et aller à l'état 37
-    tNEQ     décalage et aller à l'état 38
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-    tLESS    décalage et aller à l'état 46
-    tMORE    décalage et aller à l'état 47
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    $défaut  réduction par utilisation de la règle 20 (Term)
+    Term  aller à l'état 66
 
 
 État 53
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
-   21     | Term tOR Term •
+   25 Term: Term tTIMES • Term
 
-    tEQ      décalage et aller à l'état 37
-    tNEQ     décalage et aller à l'état 38
-    tAND     décalage et aller à l'état 39
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-    tLESS    décalage et aller à l'état 46
-    tMORE    décalage et aller à l'état 47
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    $défaut  réduction par utilisation de la règle 21 (Term)
+    Term  aller à l'état 67
 
 
 État 54
 
-   30 Condition: tWHILE $@7 tOP Term tCP tOB • ConditionBody tCB
+   24 Term: Term tDIVIDE • Term
 
-    tCONST  décalage et aller à l'état 11
-    tWHILE  décalage et aller à l'état 12
-    tIF     décalage et aller à l'état 13
-    tINT    décalage et aller à l'état 14
-    tID     décalage et aller à l'état 15
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    Expression     aller à l'état 62
-    Asg            aller à l'état 18
-    Condition      aller à l'état 19
-    ConditionBody  aller à l'état 63
+    Term  aller à l'état 68
 
 
 État 55
 
-   12 Term: Term • tPLUS Term
-   12     | Term tPLUS Term •
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   28 Term: Term tLESS • Term
 
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    $défaut  réduction par utilisation de la règle 12 (Term)
+    Term  aller à l'état 69
 
 
 État 56
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   13     | Term tMINUS Term •
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   27 Term: Term tMORE • Term
 
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
+    tOP     décalage et aller à l'état 35
+    tTRUE   décalage et aller à l'état 36
+    tFALSE  décalage et aller à l'état 37
+    tNB     décalage et aller à l'état 38
+    tID     décalage et aller à l'état 39
 
-    $défaut  réduction par utilisation de la règle 13 (Term)
+    Term  aller à l'état 70
 
 
 État 57
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   15     | Term tTIMES Term •
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   14 MultiDeclaration: tCOMMA tID • $@4 MultiDeclaration
+   16                 | tCOMMA tID • $@5 tSEM
 
-    $défaut  réduction par utilisation de la règle 15 (Term)
+    tSEM     réduction par utilisation de la règle 15 ($@5)
+    $défaut  réduction par utilisation de la règle 13 ($@4)
+
+    $@4  aller à l'état 71
+    $@5  aller à l'état 72
 
 
 État 58
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   14     | Term tDIVIDE Term •
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   40 Condition: tWHILE $@7 tOP Term tCP • tOB ConditionBody tCB
 
-    $défaut  réduction par utilisation de la règle 14 (Term)
+    tOB  décalage et aller à l'état 73
 
 
 État 59
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   18     | Term • tLESS Term
-   18     | Term tLESS Term •
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   38 Condition: tIF $@6 tOP Term tCP • tOB ConditionBody tCB
 
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-
-    $défaut  réduction par utilisation de la règle 18 (Term)
+    tOB  décalage et aller à l'état 74
 
 
 État 60
 
-   12 Term: Term • tPLUS Term
-   13     | Term • tMINUS Term
-   14     | Term • tDIVIDE Term
-   15     | Term • tTIMES Term
-   16     | Term • tEQ Term
-   17     | Term • tMORE Term
-   17     | Term tMORE Term •
-   18     | Term • tLESS Term
-   19     | Term • tNEQ Term
-   20     | Term • tAND Term
-   21     | Term • tOR Term
+   32 Term: tOP Term tCP •
 
-    tPLUS    décalage et aller à l'état 42
-    tMINUS   décalage et aller à l'état 43
-    tTIMES   décalage et aller à l'état 44
-    tDIVIDE  décalage et aller à l'état 45
-
-    $défaut  réduction par utilisation de la règle 17 (Term)
+    $défaut  réduction par utilisation de la règle 32 (Term)
 
 
 État 61
 
-   28 Condition: tIF $@6 tOP Term tCP tOB • ConditionBody tCB
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   26     | Term tEQ Term •
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
 
-    tCONST  décalage et aller à l'état 11
-    tWHILE  décalage et aller à l'état 12
-    tIF     décalage et aller à l'état 13
-    tINT    décalage et aller à l'état 14
-    tID     décalage et aller à l'état 15
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
 
-    Expression     aller à l'état 62
-    Asg            aller à l'état 18
-    Condition      aller à l'état 19
-    ConditionBody  aller à l'état 64
+    $défaut  réduction par utilisation de la règle 26 (Term)
 
 
 État 62
 
-   31 ConditionBody: Expression • ConditionBody
-   32              | Expression •
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   29     | Term tNEQ Term •
+   30     | Term • tAND Term
+   31     | Term • tOR Term
 
-    tCONST  décalage et aller à l'état 11
-    tWHILE  décalage et aller à l'état 12
-    tIF     décalage et aller à l'état 13
-    tINT    décalage et aller à l'état 14
-    tID     décalage et aller à l'état 15
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
 
-    $défaut  réduction par utilisation de la règle 32 (ConditionBody)
-
-    Expression     aller à l'état 62
-    Asg            aller à l'état 18
-    Condition      aller à l'état 19
-    ConditionBody  aller à l'état 65
+    $défaut  réduction par utilisation de la règle 29 (Term)
 
 
 État 63
 
-   30 Condition: tWHILE $@7 tOP Term tCP tOB ConditionBody • tCB
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   30     | Term tAND Term •
+   31     | Term • tOR Term
 
-    tCB  décalage et aller à l'état 66
+    tEQ      décalage et aller à l'état 47
+    tNEQ     décalage et aller à l'état 48
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
+
+    $défaut  réduction par utilisation de la règle 30 (Term)
 
 
 État 64
 
-   28 Condition: tIF $@6 tOP Term tCP tOB ConditionBody • tCB
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
+   31     | Term tOR Term •
 
-    tCB  décalage et aller à l'état 67
+    tEQ      décalage et aller à l'état 47
+    tNEQ     décalage et aller à l'état 48
+    tAND     décalage et aller à l'état 49
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+    tLESS    décalage et aller à l'état 55
+    tMORE    décalage et aller à l'état 56
+
+    $défaut  réduction par utilisation de la règle 31 (Term)
 
 
 État 65
 
-   31 ConditionBody: Expression ConditionBody •
+   22 Term: Term • tPLUS Term
+   22     | Term tPLUS Term •
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
 
-    $défaut  réduction par utilisation de la règle 31 (ConditionBody)
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+
+    $défaut  réduction par utilisation de la règle 22 (Term)
 
 
 État 66
 
-   30 Condition: tWHILE $@7 tOP Term tCP tOB ConditionBody tCB •
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   23     | Term tMINUS Term •
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
 
-    $défaut  réduction par utilisation de la règle 30 (Condition)
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+
+    $défaut  réduction par utilisation de la règle 23 (Term)
 
 
 État 67
 
-   28 Condition: tIF $@6 tOP Term tCP tOB ConditionBody tCB •
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   25     | Term tTIMES Term •
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
 
-    $défaut  réduction par utilisation de la règle 28 (Condition)
+    $défaut  réduction par utilisation de la règle 25 (Term)
+
+
+État 68
+
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   24     | Term tDIVIDE Term •
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
+
+    $défaut  réduction par utilisation de la règle 24 (Term)
+
+
+État 69
+
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   28     | Term • tLESS Term
+   28     | Term tLESS Term •
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
+
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+
+    $défaut  réduction par utilisation de la règle 28 (Term)
+
+
+État 70
+
+   22 Term: Term • tPLUS Term
+   23     | Term • tMINUS Term
+   24     | Term • tDIVIDE Term
+   25     | Term • tTIMES Term
+   26     | Term • tEQ Term
+   27     | Term • tMORE Term
+   27     | Term tMORE Term •
+   28     | Term • tLESS Term
+   29     | Term • tNEQ Term
+   30     | Term • tAND Term
+   31     | Term • tOR Term
+
+    tPLUS    décalage et aller à l'état 51
+    tMINUS   décalage et aller à l'état 52
+    tTIMES   décalage et aller à l'état 53
+    tDIVIDE  décalage et aller à l'état 54
+
+    $défaut  réduction par utilisation de la règle 27 (Term)
+
+
+État 71
+
+   14 MultiDeclaration: tCOMMA tID $@4 • MultiDeclaration
+
+    tCOMMA  décalage et aller à l'état 41
+
+    MultiDeclaration  aller à l'état 75
+
+
+État 72
+
+   16 MultiDeclaration: tCOMMA tID $@5 • tSEM
+
+    tSEM  décalage et aller à l'état 76
+
+
+État 73
+
+   40 Condition: tWHILE $@7 tOP Term tCP tOB • ConditionBody tCB
+
+    tWHILE  décalage et aller à l'état 16
+    tIF     décalage et aller à l'état 17
+    tID     décalage et aller à l'état 18
+
+    Expression     aller à l'état 77
+    Asg            aller à l'état 21
+    Condition      aller à l'état 22
+    ConditionBody  aller à l'état 78
+
+
+État 74
+
+   38 Condition: tIF $@6 tOP Term tCP tOB • ConditionBody tCB
+
+    tWHILE  décalage et aller à l'état 16
+    tIF     décalage et aller à l'état 17
+    tID     décalage et aller à l'état 18
+
+    Expression     aller à l'état 77
+    Asg            aller à l'état 21
+    Condition      aller à l'état 22
+    ConditionBody  aller à l'état 79
+
+
+État 75
+
+   14 MultiDeclaration: tCOMMA tID $@4 MultiDeclaration •
+
+    $défaut  réduction par utilisation de la règle 14 (MultiDeclaration)
+
+
+État 76
+
+   16 MultiDeclaration: tCOMMA tID $@5 tSEM •
+
+    $défaut  réduction par utilisation de la règle 16 (MultiDeclaration)
+
+
+État 77
+
+   41 ConditionBody: Expression • ConditionBody
+   42              | Expression •
+
+    tWHILE  décalage et aller à l'état 16
+    tIF     décalage et aller à l'état 17
+    tID     décalage et aller à l'état 18
+
+    $défaut  réduction par utilisation de la règle 42 (ConditionBody)
+
+    Expression     aller à l'état 77
+    Asg            aller à l'état 21
+    Condition      aller à l'état 22
+    ConditionBody  aller à l'état 80
+
+
+État 78
+
+   40 Condition: tWHILE $@7 tOP Term tCP tOB ConditionBody • tCB
+
+    tCB  décalage et aller à l'état 81
+
+
+État 79
+
+   38 Condition: tIF $@6 tOP Term tCP tOB ConditionBody • tCB
+
+    tCB  décalage et aller à l'état 82
+
+
+État 80
+
+   41 ConditionBody: Expression ConditionBody •
+
+    $défaut  réduction par utilisation de la règle 41 (ConditionBody)
+
+
+État 81
+
+   40 Condition: tWHILE $@7 tOP Term tCP tOB ConditionBody tCB •
+
+    $défaut  réduction par utilisation de la règle 40 (Condition)
+
+
+État 82
+
+   38 Condition: tIF $@6 tOP Term tCP tOB ConditionBody tCB •
+
+    $défaut  réduction par utilisation de la règle 38 (Condition)

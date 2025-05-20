@@ -5,9 +5,7 @@ int main() {
      a = 6+6+7+2*45/5;
 
 	 while ( 5==7 ) {
-		abc=4e6;
+		abc=46;
 	 }
-	 int h = a + abc;
-	 int z = a / abc;
 }
 
