@@ -4,13 +4,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include "help_functions.h"
-#define MAX_VAR 128 
 int var[26];
 int yylex(void);
 void yyerror(char *s);
 int last_st_index = 0;
 extern FILE* yyin;
-extern struct synb;
+extern struct synb stst[MAX_VAR];
 // extern entry_t symbol_table[MAX_SIZE_SYMTABLE];
 // extern int in_use ;
 // extern char current_type ;
@@ -20,7 +19,7 @@ extern int line_count;
 %}
 
 %union { int nb; char var[32];}
-%token tEQ tOB tCB tCONST tSEM tASSIGN tNEQ tAND tOR tWHILE tVOID tOP tCP tELSE tPLUS tMINUS tTIMES tDIVIDE tMAIN tBOOL tTRUE tFALSE tELSEIF tIF tEXP tCOMMA tPOINT tLESS tMORE tINT
+%token tEQ tOB tCB tCONST tSEM tPRINTF tASSIGN tNEQ tAND tOR tWHILE tVOID tOP tCP tELSE tPLUS tMINUS tTIMES tDIVIDE tMAIN tBOOL tTRUE tFALSE tELSEIF tIF tEXP tCOMMA tPOINT tLESS tMORE tINT
 %token <nb> tNB
 %token <var> tID
 %type Comp Body //Declaration NewVariable MultiDeclaration Type Expression Asg Term Condition ConditionBody
@@ -40,46 +39,49 @@ Body :    Expression Body | Expression;
 Declaration : NewVariable Declaration | NewVariable ;
 
 NewVariable:  Type tID { printf("DEC\n"); var_insert($2); } MultiDeclaration
-            | Type tID { printf("DEC\n"); var_insert($2); } tSEM;
+            | Type tID  tSEM { printf("%s",$2); printf("DEC\n"); printf("%s",$2); var_insert($2); };
 
 MultiDeclaration: tCOMMA tID { printf("MULDEC\n"); var_insert($2); } MultiDeclaration
-                | tCOMMA tID { printf("MULDEC end\n"); var_insert($2); } tSEM;
-//              add_operation
+                | tCOMMA tID tSEM { printf("MULDEC end\n"); var_insert($2); } ;
+
 Type :        tCONST | tINT;
 
-Expression :  Asg tSEM  { printf("ASSIGN\n"); } | Condition { printf("CONDITION\n"); };
+Expression :  Asg tSEM  { printf("ASSIGN\n"); } | Condition { printf("CONDITION\n"); } | Print {printf("Print\n");};
+
+Print: tPRINTF tOP Term tCP tSEM {add_instr(PRI, current_size-1, -1, -1); free_last_temp();};
 
 Asg:          tID tASSIGN Term
               {  
                 int index = var_lookup($1);
                 if (index == -1){
+                    printf("%s \n",$1);
                     yyerror("Variable not declared\n");
                 }
                 st[index].init = 1;
-                // asm_add("MOV", id_index, in_use-1, -1 );
+                add_instr(COP, index, current_size-1, -1 );
                 free_last_temp(); 
                };
 
-Term:         Term tPLUS Term { printf("PLUS ");} // add_operation("ADD");}
-            | Term tMINUS Term { printf("MINUS "); } //add_operation("SUB");}
-            | Term tDIVIDE Term { printf("DIVIDE ");} // add_operation("DIV");}
-            | Term tTIMES Term { printf("TIMES "); } //add_operation("MUL");}
-            | Term tEQ Term { printf("EQ ");} // add_operation("EQU");}
-            | Term tMORE Term { printf("MORE "); } //add_operation("GRE");}
-            | Term tLESS Term { printf("LESS ");} // add_operation("LES");} 
-            | Term tNEQ Term { printf("NEQ "); } //add_operation("NEQ");}
-            | Term tAND Term { printf("AND "); } //add_operation("AND");}
-            | Term tOR  Term { printf("OR  "); } //add_operation("OR"); }
+Term:         Term tPLUS Term { printf("PLUS "); add_op_instr(ADD);}
+            | Term tMINUS Term { printf("MINUS "); add_op_instr(SUB);}
+            | Term tDIVIDE Term { printf("DIVIDE "); add_op_instr(DIV);}
+            | Term tTIMES Term { printf("TIMES "); add_op_instr(MUL);}
+            | Term tEQ Term { printf("EQ "); add_op_instr(EQU);}
+            | Term tMORE Term { printf("MORE "); add_op_instr(INF);}
+            | Term tLESS Term { printf("LESS "); add_op_instr(SUP);} 
+            | Term tNEQ Term { printf("NEQ "); add_op_instr(NEQ);}
+            | Term tAND Term { printf("AND "); add_op_instr(AND);}
+            | Term tOR  Term { printf("OR  "); add_op_instr(OR);}
             | tOP Term tCP 
-            | tTRUE  { printf("TRUE "); temp_var_assign();} // asm_add("STO", , 1, -1); } 
-            | tFALSE { printf("FALSE "); temp_var_assign();} // asm_add("STO", add_temp_to_symtable(), 0, -1); }
+            | tTRUE  { printf("TRUE "); add_instr(ASG, temp_var_assign(), 1, -1); } 
+            | tFALSE { printf("FALSE "); add_instr(ASG, temp_var_assign(), 0, -1); }
             | tID { printf("ID "); 
                     int index = var_lookup($1);
                     if (index == -1){
                         yyerror("Variable not declared\n");
                     } 
-                    temp_var_assign();} // asm_add("MOV", add_temp_to_symtable(), get_index($1), -1); }
-            | tNB { printf("NB "); temp_var_assign();}; //asm_add("STO", add_temp_to_symtable(), $1, -1); };
+                    add_instr(COP, temp_var_assign(), var_lookup($1), -1); }
+            | tNB { printf("NB "); add_instr(ASG, temp_var_assign(), $1, -1); };
 
 Condition:    tIF {printf("IF \n");} tOP Term tCP tOB ConditionBody tCB
             | tWHILE {printf("WHILE \n");} tOP Term tCP tOB ConditionBody tCB;
@@ -100,6 +102,7 @@ int main(int argc, char *argv[])
   }
   yyparse();
   print_sym_tab();
+  assembly_print();
   fclose(yyin);
   return 0;
 }

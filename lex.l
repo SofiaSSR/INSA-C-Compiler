@@ -24,6 +24,7 @@
 "while"           {return tWHILE;}
 "void"            {return tVOID;}
 "int"             {return tINT;}
+"printf"          {return tPRINTF;}
 "=="              {return tEQ;}
 "&&"              {return tAND;}
 "||"              {return tOR;}
